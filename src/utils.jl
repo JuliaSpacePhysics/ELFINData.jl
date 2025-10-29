@@ -1,6 +1,3 @@
-import Base: read
-using URIs
-
 function format_date(pattern, date)
     return replace(
         pattern,
@@ -24,8 +21,6 @@ function RemoteFile(uri::URI; dir = ".", updates = :never, flatten = false)
 end
 
 RemoteFile(uri::String; kwargs...) = RemoteFile(URI(uri); kwargs...)
-
-local_path(f) = f.path
 
 function local_path(uri::URI, dir = "."; flatten::Bool = false)
     fullpath = lstrip(uri.path, '/')

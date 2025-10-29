@@ -37,15 +37,28 @@ The following function derives directionally resolved flux spectra (omni, para, 
 epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
 ```
 
-Commonly used variables have concise convenience wrappers. Because these variables are uniquely identified, no additional metadata (such as `probe`, `datatype`, `level`, or `dataset`) is required.
+Commonly used variables have concise convenience wrappers. Because these variables are uniquely named, no additional metadata (such as `probe`, `datatype`, `level`, or `dataset`) is required to access them.
 
 ```@example quick_start
 ELA_POS_GEI("2020-10-01", "2020-10-02")
+# Alternative ways to access the same variable: 
+# `STATE("2020-10-01", "2020-10-02"; probe = "a")["ela_pos_gei"]` or
+# `ELA_L1_STATE("2020-10-01", "2020-10-02")["ela_pos_gei"]`
+
 ELB_FGS("2020-10-01", "2020-10-02")
+# Alternative ways to access the same variable: 
+# `ELB_L1_FGS("2020-10-01", "2020-10-02")["elb_fgs"]` or 
+# `FGM("2020-10-01", "2020-10-02"; probe = "b", datatype = "survey")["elb_fgs"]`
+
 ELA_PEF_HS_EPAT_NFLUX("2020-10-01", "2020-10-02")
+# Alternative ways to access the same variable: 
+# `ELA_L2_EPDEF("2020-10-01", "2020-10-02")["ela_pef_hs_Epat_nflux"]` or 
+# `EPD("2020-10-01", "2020-10-02"; probe = "a", level = "l2", datatype = "epdef")["ela_pef_hs_Epat_nflux"]`
 ```
 
-## Instruments
+## API
+
+### Instruments
 
 ```@docs
 EPD
@@ -53,21 +66,21 @@ FGM
 STATE
 ```
 
-## Datasets
+### Datasets
 
 ```@autodocs
 Modules = [ELFINData]
 Filter = t -> t isa ELFINData.ELFINLogicalDataset
 ```
 
-## Variables
+### Variables
 
 ```@autodocs
 Modules = [ELFINData]
 Filter = t -> t isa ELFINData.ELFINLogicalVariable
 ```
 
-## API
+### Functions and Types
 
 ```@autodocs
 Modules = [ELFINData]
@@ -107,5 +120,4 @@ b2 = @b PySPEDAS.elfin.epd($trange; level = "l2")
 ```
 
 !!! note "Array layout"
-
-Julia arrays follow the column-major convention used by most CDF files (time is the last dimension), whereas NumPy and PySPEDAS use row-major arrays (time is the first dimension). Transpose the PySPEDAS output before comparing so the dimensions align.
+    Julia arrays follow the column-major convention used by most CDF files (time is the last dimension), whereas NumPy and PySPEDAS use row-major arrays (time is the first dimension). Transpose the PySPEDAS output before comparing so the dimensions align.
