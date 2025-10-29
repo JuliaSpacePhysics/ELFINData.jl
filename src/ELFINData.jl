@@ -24,6 +24,7 @@ using SpaceDataModel: AbstractInstrument, AbstractDataSet
 using Downloads: request
 using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
 using Dates
+using URIs
 
 export ELA_L1_EPDEF, ELB_L1_EPDEF, ELA_L2_EPDEF, ELB_L2_EPDEF, ELA_L1_EPDIF, ELB_L1_EPDIF,
     ELA_PEF, ELB_PEF, ELA_PIF, ELB_PIF,
