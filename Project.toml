@@ -1,6 +1,6 @@
 name = "ELFINData"
 uuid = "fcbbe0ba-d66e-4e8f-95dd-8166f95b70c5"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Beforerr <zzj956959688@gmail.com> and contributors"]
 
 [deps]
