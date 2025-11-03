@@ -4,10 +4,19 @@ CurrentModule = ELFINData
 
 # ELFINData
 
+[![DOI](https://zenodo.org/badge/1071121579.svg)](https://doi.org/10.5281/zenodo.17500124)
+
 `ELFINData.jl` provides a high-level Julia interface to the ELFIN mission's particle and field measurements. The sections below highlight the most common entry points and link to the auto-generated API reference.
 
 ```@docs
 ELFINData
+```
+
+## Installation
+
+```julia
+using Pkg
+Pkg.add("ELFINData")
 ```
 
 ## Quick Start
