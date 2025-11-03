@@ -20,3 +20,9 @@ function _epd_pattern(probe, datatype; level = "l1", version)
     path1 = datatype == "epdef" ? "electron" : "ion"
     return "$BASE_URL/$probe/$level/epd/fast/$path1/{Y}/$(probe)_$(level)_$(datatype)_{Y}{M:02d}{D:02d}_$version.cdf"
 end
+
+function _mrmx_pattern(probe, datatype; level = "l1", version)
+    probe, version, level = _probe(probe), _version(version), _level(level)
+    return "$BASE_URL/$probe/$level/$datatype/{Y}/$(probe)_$(level)_$(datatype)_{Y}{M:02d}{D:02d}_$version.cdf"
+end
+

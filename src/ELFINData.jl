@@ -32,6 +32,8 @@ export ELA_L1_EPDEF, ELB_L1_EPDEF, ELA_L2_EPDEF, ELB_L2_EPDEF, ELA_L1_EPDIF, ELB
     ELA_PEF_HS_EPAT_EFLUX, ELB_PEF_HS_EPAT_EFLUX, ELA_PEF_FS_EPAT_EFLUX, ELB_PEF_FS_EPAT_EFLUX
 export ELA_L1_FGS, ELB_L1_FGS, ELA_FGS, ELB_FGS
 export ELA_L1_STATE, ELB_L1_STATE, ELA_POS_GEI, ELB_POS_GEI
+export ELA_L1_MRMA, ELB_L1_MRMA, ELA_L1_MRMI, ELB_L1_MRMI
+export ELA_MRMA, ELB_MRMA, ELA_MRMI, ELB_MRMI
 export EPD, FGM, STATE
 export epd_spectral
 
@@ -51,6 +53,7 @@ include("types.jl")
 include("url_pattern.jl")
 include("epd.jl")
 include("fgm.jl")
+include("mrmx.jl")
 include("state.jl")
 include("utils.jl")
 
