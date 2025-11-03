@@ -9,6 +9,7 @@ authors:
 license: MIT
 url: "https://github.com/JuliaSpacePhysics/ELFINData.jl"
 date-released: 2025
+doi: 10.5281/zenodo.17500124
 keywords:
   - Julia
   - Space physics
