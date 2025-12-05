@@ -1,11 +1,11 @@
 abstract type LogicalVariable end
 
-struct ELFINLogicalDataset{N, MD} <: AbstractDataSet
+struct ELFINLogicalDataset{N, MD, P} <: AbstractDataSet
     name::N
     probe::Probe
     level::Level
     datatype::String
-    url_pattern::String
+    url_pattern::P
     metadata::MD
 end
 

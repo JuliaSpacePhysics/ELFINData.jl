@@ -16,7 +16,7 @@ VelocityDistributionFunctions = "63a0b508-f74a-48f7-b6e7-0e65849b0078"
 [compat]
 CDFDatasets = "0.1.3"
 Dates = "1"
-DimensionalData = "0.29.16"
+DimensionalData = "0.29"
 Downloads = "1"
 Printf = "1"
 SpaceDataModel = "0.2.0"
