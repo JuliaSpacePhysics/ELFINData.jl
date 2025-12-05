@@ -1,13 +1,3 @@
-function format_date(pattern, date)
-    return replace(
-        pattern,
-        "{Y}" => year(date),
-        "{M:02d}" => string(month(date); pad = 2),
-        "{D:02d}" => string(day(date); pad = 2)
-    )
-end
-
-
 # https://github.com/helgee/RemoteFiles.jl/blob/master/src/RemoteFiles.jl
 struct RemoteFile
     uri::URI
@@ -53,7 +43,7 @@ Download data for a given time range `[t0, t1)` using the `pattern`.
 function download_pattern(pattern, t0, t1; update::Bool = false, dir = "elfin_data", kw...)
     tranges = _tranges(t0, t1; kw...)
     outputs = map(tranges) do ti
-        url = format_date(pattern, ti)
+        url = pattern(ti)
         file = RemoteFile(url; dir)
         output = file.path
         (!isfile(output) || update) ? _download(file) : output
