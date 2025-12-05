@@ -1,428 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · ELFINData.jl</title><meta name="title" content="Home · ELFINData.jl"/><meta property="og:title" content="Home · ELFINData.jl"/><meta property="twitter:title" content="Home · ELFINData.jl"/><meta name="description" content="Documentation for ELFINData.jl."/><meta property="og:description" content="Documentation for ELFINData.jl."/><meta property="twitter:description" content="Documentation for ELFINData.jl."/><meta property="og:url" content="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><meta property="twitter:url" content="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><link rel="canonical" href="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body>
-<!-- NAVBAR START -->
-<style>
-    html {
-        scroll-padding-top: calc(55px + 1rem);
-    }
-
-    /* Documenter css tweaks */
-    .docs-sidebar {
-        margin-top: 3.75rem;
-    }
-
-    #documenter {
-        margin-top: 3.75rem;
-    }
-
-    .docs-version-selector {
-        margin-bottom: 60px !important;
-    }
-
-    @media screen and (max-width: 1056px) {
-        .docs-version-selector {
-            margin-bottom: 60px !important;
-        }
-
-        .docs-sidebar {
-            margin-top: 0 !important;
-        }
-    }
-    /* Documenter css tweaks ends here */
-
-    :root {
-        --heading-color: white;
-        --item-color: rgb(165, 165, 165);
-        --primary-bg: #f8f9fa;  /* Light gray to match Quarto's default navbar */
-        --navbar-text: #212529;  /* Dark text color for better contrast */
-        --hover-color: #e9ecef;  /* Slightly darker gray for hover state */
-        --deprecated-bg: #ff4d4d;
-        --deprecated-text: white;
-    }
-
-    .ext-navigation {
-        position: fixed;
-        height: 3.75rem;
-        top: 0;
-        width: 100%;
-        background-color: var(--primary-bg);
-        color: var(--navbar-text);
-        z-index: 1000;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        padding: 0 1.0625rem;
-        transition: transform 0.3s;
-    }
-
-    .ext-navbar-logo {
-        margin-left: 0.625rem;
-    }
-
-    .ext-nav-links {
-        display: flex;
-        align-items: center;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        flex-grow: 1;
-    }
-
-    .ext-nav-links li {
-        margin-left: 1rem !important;
-    }
-
-    .ext-nav-link {
-        color: var(--navbar-text) !important;
-        text-decoration: none;
-        font-size: 1.0625rem !important;
-        transition: color 0.2s ease;
-        cursor: pointer;
-    }
-
-    .ext-nav-link:hover,
-    .ext-navbar-item-single a:hover {
-        color: var(--hover-color) !important;
-        text-decoration: none !important;
-    }
-    
-    .ext-navigation a {
-        text-decoration: none !important;
-    }
-
-    .ext-navbar-item-single a {
-        color: var(--navbar-text) !important;
-    }
-
-    .ext-menu-toggle {
-        display: none;
-        font-size: 1.5rem;
-        color: white;
-        cursor: pointer;
-    }
-
-    .ext-dropdown {
-        display: none;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: auto auto auto;
-        padding: 1.875rem;
-        position: absolute;
-        width: 100%;
-        left: 0;
-        background-color: var(--primary-bg);
-        line-height: 1.875rem;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        transform: translateY(-0.625rem);
-    }
-
-    #library-handler::after {
-        content: "▼";
-        font-size: 0.6875rem;
-        margin-left: 0.3125rem;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    #library-handler.open::after {
-        content: "▲";
-    }
-
-    .ext-dropdown.show {
-        display: grid;
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .ext-dropdown ul {
-        height: auto;
-        width: 12.5rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .ext-dropdown ul li {
-        text-align: left;
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar-sub-item {
-        list-style: none;
-    }
-
-    .ext-dropdown ul a li {
-        color: var(--item-color);
-        width: 15.625rem;
-        border-radius: 3px;
-        padding: 0.125rem 0.625rem;
-        transition: background-color 0.2s ease;
-        text-decoration: none !important;
-    }
-
-    .ext-dropdown ul a li:hover {
-        background-color: rgba(107, 107, 107, 0.5);
-    }
-
-    .ext-dropdown-item-heading {
-        /* color: var(--heading-color); */
-        text-align: center;
-    }
-
-    .deprecated-badge {
-        background-color: var(--deprecated-bg);
-        color: var(--deprecated-text);
-        font-size: 0.75rem;
-        padding: 0.125rem 0.375rem;
-        border-radius: 3px;
-        margin-left: 0.5rem;
-        line-height: 1;
-    }
-
-    /* Responsive styling */
-    @media (max-width: 966px) {
-        .ext-dropdown {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .ext-nav-links {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            background-color: var(--primary-bg);
-            position: absolute;
-            top: 3.75rem;
-            left: 0;
-            padding: 0.625rem 0;
-            height: auto;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgb(141, 141, 141) grey;
-        }
-
-        .ext-nav-links.show {
-            display: flex;
-        }
-
-        .ext-nav-links li {
-            margin: 0.625rem 0;
-            text-align: center;
-        }
-
-        .ext-menu-toggle {
-            display: block;
-            margin-left: auto;
-        }
-
-        .ext-navigation.hide {
-            transform: translateY(-3.75rem);
-        }
-
-        .ext-dropdown {
-            place-content: center;
-            text-align: center;
-            grid-template-columns: 1fr;
-            line-height: 1.25rem;
-            padding: 0.625rem;
-        }
-
-        .ext-dropdown ul {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 0.3125rem;
-        }
-
-        .ext-dropdown ul li {
-            text-align: center;
-            /* justify-content: center; */
-        }
-
-        .ext-dropdown ul a li {
-            width: 100%;
-        }
-
-        .ext-dropdown ul a li:hover {
-            background-color: var(--primary-bg);
-            /* color: #fff; */
-        }
-
-        /* Modified scroll bar */
-        .ext-nav-links::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .ext-nav-links::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 5px grey;
-        }
-
-        .ext-nav-links::-webkit-scrollbar-thumb {
-            background: rgb(141, 141, 141);
-            border-radius: 3px;
-        }
-
-        .ext-nav-links::-webkit-scrollbar-thumb:hover {
-            background: #9b9b9b;
-        }
-    }
-</style>
-<nav class="ext-navigation">
-    <a href="https://juliaspacephysics.github.io"></a>
-    <a style="color: #212529 !important; font-size: 21.25px !important; margin-left: 10px;" href="https://juliaspacephysics.github.io">JuliaSpacePhysics</a>
-    <ul class="ext-nav-links">
-        <li>
-            <p class="ext-nav-link" id="library-handler">Ecosystem</p>
-            <div class="ext-dropdown" id="ext-dropdown-items">
-                <ul>
-                    <li class="ext-dropdown-item-heading">Core</li>
-                    <a href="https://juliaspacephysics.github.io/SPEDAS.jl"><li>SPEDAS.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/SpaceDataModel.jl"><li>SpaceDataModel.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/GeoCotrans.jl"><li>GeoCotrans.jl</li></a>
-                    <a href="https://henry2004y.github.io/TestParticle.jl/"><li>TestParticle.jl</li></a>
-                </ul>
-                <ul>
-                    <li class="ext-dropdown-item-heading">Data</li>
-                    <a href="https://juliaspacephysics.github.io/CDFDatasets.jl/"><li>CDFDatasets.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/CDAWeb.jl/"><li>CDAWeb.jl</li></a>
-                    <a href="https://sciqlop.github.io/Speasy.jl/"><li>Speasy.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/HAPIClient.jl/"><li>HAPIClient.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/Madrigal.jl/"><li>Madrigal.jl</li></a>
-                    <a href="https://github.com/JuliaSpacePhysics/PySPEDAS.jl"><li>PySPEDAS.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/CommonDataFormat.jl/"><li>CommonDataFormat.jl</li></a>
-                </ul>
-                <ul>
-                    <li class="ext-dropdown-item-heading">Domain</li>
-                    <a href="https://juliaspacephysics.github.io/SolarEnergeticParticle.jl/dev/"><li>SolarEnergeticParticle.jl (Helio)</li></a>
-                    <a href="https://juliaspacephysics.github.io/GeoAACGM.jl"><li>GeoAACGM.jl (ITM)</li></a>
-                    <a href="https://juliaspacephysics.github.io/IRBEM.jl"><li>IRBEM.jl (Magnetosphere)</li></a>
-                </ul>
-                <!-- Enable when more mission-specific packages are available -->
-                <ul>
-                    <li class="ext-dropdown-item-heading">Mission-specific</li>
-                    <a href="https://juliaspacephysics.github.io/EISCATData.jl"><li>EISCATData.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/ELFINData.jl"><li>ELFINData.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/DMSPData.jl"><li>DMSPData.jl</li></a>
-                </ul>
-               
-                <ul>
-                    <li class="ext-dropdown-item-heading">General Analysis</li>
-                    <a href="https://juliaplasma.github.io/PlasmaFormulary.jl"><li>JuliaPlasma/PlasmaFormulary.jl</li></a>
-                    <a href="https://juliaplasma.github.io/ChargedParticles.jl"><li>JuliaPlasma/ChargedParticles.jl</li></a>
-                    <a href="https://juliaspacephysics.github.io/VelocityDistributionFunctions.jl/dev/"><li>VelocityDistributionFunctions.jl</li></a>
-                    <a href="https://github.com/JuliaSpacePhysics/SpacePhysicsMakie.jl"><li>SpacePhysicsMakie.jl</li></a>
-                </ul>
-            </div>
-        </li>
-        <li><a href="https://juliaspacephysics.github.io/tutorials/">Tutorials</a></li>
-    </ul>
-    <a href="https://github.com/JuliaSpacePhysics/JuliaSpacePhysics.jl">
-        <svg width="32px" height="32px" viewBox="-8.2 -8.2 36.40 36.40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <title>github [#142]</title>
-                <desc>Created with Sketch.</desc>
-                <defs></defs>
-                <g id="Page-1" stroke-width="0.0002" fill="none" fill-rule="evenodd">
-                    <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="#ffffff">
-                        <g id="icons" transform="translate(56.000000, 160.000000)">
-                            <path
-                                d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
-                                id="github-[#142]">
-                            </path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>
-    </a>
-    <span class="ext-menu-toggle">&#9776;</span>
-</nav>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const menuToggle = document.querySelector(".ext-menu-toggle");
-        const navLinks = document.querySelector(".ext-nav-links");
-        const nav = document.querySelector(".ext-navigation");
-        const navigationHandler = document.getElementById("library-handler");
-        const navigationItemsContainer =
-            document.getElementById("ext-dropdown-items");
-        let lastScrollY = window.scrollY;
-
-        function setAppropriateHeight() {
-            if (window.innerWidth <= 768) {
-                const viewportHeight = window.innerHeight;
-                const navHeight = nav.offsetHeight;
-                navLinks.style.maxHeight = `${viewportHeight - navHeight}px`;
-                navLinks.style.overflowY = "auto";
-            } else {
-                navLinks.style.maxHeight = "";
-                navLinks.style.overflowY = "";
-            }
-        }
-
-        // Toggle main menu for mobile
-        menuToggle.addEventListener("click", () => {
-            navLinks.classList.toggle("show");
-            if (navLinks.classList.contains("show")) {
-                setAppropriateHeight();
-                // Ensure the dropdown is hidden when menu is first opened
-                navigationItemsContainer.style.display = "none";
-                navigationItemsContainer.classList.remove("show");
-            }
-        });
-
-        // Close menus if clicked outside
-        document.addEventListener("click", (event) => {
-            if (
-                !navLinks.contains(event.target) &&
-                !menuToggle.contains(event.target)
-            ) {
-                navLinks.classList.remove("show");
-                navigationItemsContainer.classList.remove("show");
-                navigationHandler.classList.remove("open");
-            }
-        });
-
-        // Hide navigation bar on scroll down in mobile view
-        window.addEventListener("scroll", () => {
-            if (window.innerWidth <= 768) {
-                nav.classList.toggle("hide", window.scrollY > lastScrollY);
-                lastScrollY = window.scrollY;
-            }
-        });
-
-        // Library API script
-        navigationHandler.addEventListener("click", (event) => {
-            event.preventDefault(); // Prevent default action of the link
-            if (navigationItemsContainer.classList.contains("show")) {
-                navigationItemsContainer.classList.remove("show");
-                navigationHandler.classList.remove("open");
-                setTimeout(() => {
-                    navigationItemsContainer.style.display = "none";
-                }, 500); // Match the timeout to the CSS transition duration
-            } else {
-                navigationItemsContainer.style.display = "grid";
-                navigationHandler.classList.add("open");
-                setTimeout(() => {
-                    navigationItemsContainer.classList.add("show");
-                }, 10); // Delay to ensure the display change takes effect before adding class
-            }
-            setAppropriateHeight(); // Recalculate height when dropdown changes
-        });
-
-        // Handle window resize
-        window.addEventListener("resize", setAppropriateHeight);
-
-        // Initial setup
-        setAppropriateHeight();
-    });
-</script>
-<!-- NAVBAR END -->
-
-<div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>ELFINData.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#Quick-Start"><span>Quick Start</span></a></li><li><a class="tocitem" href="#API"><span>API</span></a></li><li><a class="tocitem" href="#Validation-and-Benchmarking-with-PySPEDAS"><span>Validation and Benchmarking with PySPEDAS</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaSpacePhysics/ELFINData.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/main/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="ELFINData"><a class="docs-heading-anchor" href="#ELFINData">ELFINData</a><a id="ELFINData-1"></a><a class="docs-heading-anchor-permalink" href="#ELFINData" title="Permalink"></a></h1><p><a href="https://doi.org/10.5281/zenodo.17500124"><img src="https://zenodo.org/badge/1071121579.svg" alt="DOI"/></a></p><p><code>ELFINData.jl</code> provides a high-level Julia interface to the ELFIN mission&#39;s particle and field measurements. The sections below highlight the most common entry points and link to the auto-generated API reference.</p><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELFINData" href="#ELFINData.ELFINData"><code>ELFINData.ELFINData</code></a> — <span class="docstring-category">Module</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Load and process data from the Electron Losses and Fields INvestigation (ELFIN) mission.</p><p><strong>Instruments</strong></p><ul><li><a href="#ELFINData.FGM">Fluxgate Magnetometer (FGM)</a></li><li><a href="#ELFINData.EPD">Energetic Particle Detector (EPD)</a></li><li>Magneto Resistive Magnetometer-a (MRMa)</li><li>Magneto Resistive Magnetometer-i (MRMi)</li><li><a href="#ELFINData.STATE">State data (state)</a></li><li>Engineering data (ENG)</li></ul><p><strong>Functions</strong></p><ul><li><a href="#ELFINData.epd_spectral-Tuple"><code>epd_spectral</code></a>: Load ELFIN EPD L2 data and extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.</li></ul><p>References: <a href="https://elfin.igpp.ucla.edu/">Website</a>, <a href="https://science.nasa.gov/mission/elfin/">NASA Science</a>, <a href="https://en.wikipedia.org/wiki/ELFIN">Wikipedia</a>, <a href="https://doi.org/10.1007/s11214-020-00721-7">DOI</a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/ELFINData.jl#L1-L16">source</a></section></article><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><pre><code class="language-julia hljs">using Pkg
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · ELFINData.jl</title><meta name="title" content="Home · ELFINData.jl"/><meta property="og:title" content="Home · ELFINData.jl"/><meta property="twitter:title" content="Home · ELFINData.jl"/><meta name="description" content="Documentation for ELFINData.jl."/><meta property="og:description" content="Documentation for ELFINData.jl."/><meta property="twitter:description" content="Documentation for ELFINData.jl."/><meta property="og:url" content="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><meta property="twitter:url" content="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><link rel="canonical" href="https://JuliaSpacePhysics.github.io/ELFINData.jl/"/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>ELFINData.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#Quick-Start"><span>Quick Start</span></a></li><li><a class="tocitem" href="#API"><span>API</span></a></li><li><a class="tocitem" href="#Validation-and-Benchmarking-with-PySPEDAS"><span>Validation and Benchmarking with PySPEDAS</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaSpacePhysics/ELFINData.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/main/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="ELFINData"><a class="docs-heading-anchor" href="#ELFINData">ELFINData</a><a id="ELFINData-1"></a><a class="docs-heading-anchor-permalink" href="#ELFINData" title="Permalink"></a></h1><p><a href="https://doi.org/10.5281/zenodo.17500124"><img src="https://zenodo.org/badge/1071121579.svg" alt="DOI"/></a></p><p><code>ELFINData.jl</code> provides a high-level Julia interface to the ELFIN mission&#39;s particle and field measurements. The sections below highlight the most common entry points and link to the auto-generated API reference.</p><article><details class="docstring" open="true"><summary id="ELFINData.ELFINData"><a class="docstring-binding" href="#ELFINData.ELFINData"><code>ELFINData.ELFINData</code></a> — <span class="docstring-category">Module</span></summary><section><div><p>Load and process data from the Electron Losses and Fields INvestigation (ELFIN) mission.</p><p><strong>Instruments</strong></p><ul><li><a href="#ELFINData.FGM">Fluxgate Magnetometer (FGM)</a></li><li><a href="#ELFINData.EPD">Energetic Particle Detector (EPD)</a></li><li>Magneto Resistive Magnetometer-a (MRMa)</li><li>Magneto Resistive Magnetometer-i (MRMi)</li><li><a href="#ELFINData.STATE">State data (state)</a></li><li>Engineering data (ENG)</li></ul><p><strong>Functions</strong></p><ul><li><a href="#ELFINData.epd_spectral-Tuple"><code>epd_spectral</code></a>: Load ELFIN EPD L2 data and extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.</li></ul><p>References: <a href="https://elfin.igpp.ucla.edu/">Website</a>, <a href="https://science.nasa.gov/mission/elfin/">NASA Science</a>, <a href="https://en.wikipedia.org/wiki/ELFIN">Wikipedia</a>, <a href="https://doi.org/10.1007/s11214-020-00721-7">DOI</a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/ELFINData.jl#L1-L16">source</a></section></details></article><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><pre><code class="language-julia hljs">using Pkg
 Pkg.add(&quot;ELFINData&quot;)</code></pre><h2 id="Quick-Start"><a class="docs-heading-anchor" href="#Quick-Start">Quick Start</a><a id="Quick-Start-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Start" title="Permalink"></a></h2><p>The examples in this section walk through the typical workflow: discover an instrument&#39;s datasets, load data for the specified time range, and request processed data products.</p><pre><code class="language-julia hljs">using ELFINData
 
 # Inspect the Energetic Particle Detector (EPD) datasets
-EPD.datasets</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Dict{Tuple{String, String, String}, ELFINData.ELFINLogicalDataset{Symbol}} with 6 entries:
+EPD.datasets</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Dict{Tuple{String, String, String}, ELFINData.ELFINLogicalDataset{Symbol, MD, ELFINData.Pattern} where MD} with 6 entries:
   (&quot;a&quot;, &quot;l2&quot;, &quot;epdef&quot;) =&gt; ELA_L2_EPDEF
   (&quot;b&quot;, &quot;l1&quot;, &quot;epdif&quot;) =&gt; ELB_L1_EPDIF
   (&quot;b&quot;, &quot;l1&quot;, &quot;epdef&quot;) =&gt; ELB_L1_EPDEF
@@ -432,27 +13,10 @@ EPD.datasets</code></pre><pre class="documenter-example-output"><code class="noh
 ELA_L1_FGS(&quot;2020-10-01&quot;, &quot;2020-10-02&quot;)
 # Alternatively, specify probe and datatype explicitly. This resolves the same logical dataset.
 # If no time range is given, the call returns the set of datasets (i.e. `FGM(; probe = &quot;a&quot;, datatype = &quot;survey&quot;) == ELA_L1_FGS`)
-FGM(&quot;2020-10-01&quot;, &quot;2020-10-02&quot;; probe = &quot;a&quot;, datatype = &quot;survey&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr31">Dataset: </span>
+FGM(&quot;2020-10-01&quot;, &quot;2020-10-02&quot;; probe = &quot;a&quot;, datatype = &quot;survey&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr31">Dataset: [&quot;elfin_data/ela/l1/fgm/survey/2020/ela_l1_fgs_20201001_v01.cdf&quot;]</span>
 Group: ela_l1_fgs
 
-<span class="sgr31">Variables</span>
-<span class="sgr32">  ela_fgs_time</span>   (28090)
-    Datatype:    <span class="sgr1">CommonDataFormat.TT2000</span>
-    Dimensions:  
-    Attributes:
-     FILLVAL              = <span class="sgr36">CommonDataFormat.TT2000[1707-09-22T12:12:10.961]</span>
-     FIELDNAM             = <span class="sgr36">Time since Jan 1, 2000</span>
-     VALIDMAX             = <span class="sgr36">CommonDataFormat.TT2000[2029-12-31T23:59:58.999]</span>
-     CATDESC              = <span class="sgr36">ela_fgs_time, UTC, in seconds</span>
-     VALIDMIN             = <span class="sgr36">CommonDataFormat.TT2000[2010-01-01T00:00:00]</span>
-     UNITS                = <span class="sgr36">s</span>
-     VAR_NOTES            = <span class="sgr36">Unleaped seconds</span>
-     SCALETYP             = <span class="sgr36">linear</span>
-     TIME_BASE            = <span class="sgr36">J2000</span>
-     FORMAT               = <span class="sgr36">E12.2</span>
-     VAR_TYPE             = <span class="sgr36">support_data</span>
-     LABLAXIS             = <span class="sgr36">ela_fgs_time</span>
-
+<span class="sgr31">Data variables</span>
 <span class="sgr32">  ela_fgs</span>   (3 × 28090)
     Datatype:    <span class="sgr1">Float32</span>
     Dimensions:  nothing × ela_fgs_time
@@ -469,33 +33,6 @@ Group: ela_l1_fgs
      LABL_PTR_1           = <span class="sgr36">StaticStrings.StaticString{6}[&quot;Bx    &quot;, &quot;By    &quot;, &quot;Bz    &quot;]</span>
      FORMAT               = <span class="sgr36">F12.8</span>
      VAR_TYPE             = <span class="sgr36">data</span>
-
-<span class="sgr32">  ela_fgs_labl</span>   (3 × 1)
-    Datatype:    <span class="sgr1">StaticStrings.StaticString{6}</span>
-    Dimensions:  
-    Attributes:
-     FORMAT               = <span class="sgr36">A6</span>
-     VAR_TYPE             = <span class="sgr36">metadata</span>
-     CATDESC              = <span class="sgr36">labels for components of Bfield</span>
-     FIELDNAM             = <span class="sgr36">label Bfield</span>
-     LABLAXIS             = <span class="sgr36">ela_fgs_labl</span>
-
-<span class="sgr32">  ela_fgs_fsp_time</span>   (945)
-    Datatype:    <span class="sgr1">CommonDataFormat.TT2000</span>
-    Dimensions:  
-    Attributes:
-     FILLVAL              = <span class="sgr36">CommonDataFormat.TT2000[1707-09-22T12:12:10.961]</span>
-     FIELDNAM             = <span class="sgr36">Time since Jan 1, 2000</span>
-     VALIDMAX             = <span class="sgr36">CommonDataFormat.TT2000[2029-12-31T23:59:58.999]</span>
-     CATDESC              = <span class="sgr36">ela_fgs_fap time, UTC, in seconds</span>
-     VALIDMIN             = <span class="sgr36">CommonDataFormat.TT2000[2010-01-01T00:00:00]</span>
-     UNITS                = <span class="sgr36">s</span>
-     VAR_NOTES            = <span class="sgr36">Unleaped seconds</span>
-     SCALETYP             = <span class="sgr36">linear</span>
-     TIME_BASE            = <span class="sgr36">J2000</span>
-     FORMAT               = <span class="sgr36">E12.2</span>
-     VAR_TYPE             = <span class="sgr36">support_data</span>
-     LABLAXIS             = <span class="sgr36">ela_fgs_fsp_time</span>
 
 <span class="sgr32">  ela_fgs_fsp_res_dmxl</span>   (3 × 945)
     Datatype:    <span class="sgr1">Float32</span>
@@ -551,16 +88,6 @@ Group: ela_l1_fgs
      FORMAT               = <span class="sgr36">F12.8</span>
      VAR_TYPE             = <span class="sgr36">data</span>
 
-<span class="sgr32">  ela_fgs_fsp_labl</span>   (3 × 1)
-    Datatype:    <span class="sgr1">StaticStrings.StaticString{6}</span>
-    Dimensions:  
-    Attributes:
-     FORMAT               = <span class="sgr36">A6</span>
-     VAR_TYPE             = <span class="sgr36">metadata</span>
-     CATDESC              = <span class="sgr36">labels for components of fgs_fsp</span>
-     FIELDNAM             = <span class="sgr36">label fgs_fsp XYZ</span>
-     LABLAXIS             = <span class="sgr36">ela_fgs_fsp_labl</span>
-
 <span class="sgr32">  ela_fgs_fsp_igrf_dmxl</span>   (3 × 945)
     Datatype:    <span class="sgr1">Float32</span>
     Dimensions:  nothing × ela_fgs_fsp_time
@@ -597,16 +124,6 @@ Group: ela_l1_fgs
      FORMAT               = <span class="sgr36">F12.8</span>
      VAR_TYPE             = <span class="sgr36">data</span>
 
-<span class="sgr32">  ela_fgs_igrf_labl</span>   (3 × 1)
-    Datatype:    <span class="sgr1">StaticStrings.StaticString{6}</span>
-    Dimensions:  
-    Attributes:
-     FORMAT               = <span class="sgr36">A6</span>
-     VAR_TYPE             = <span class="sgr36">metadata</span>
-     CATDESC              = <span class="sgr36">labels for components of igrf</span>
-     FIELDNAM             = <span class="sgr36">label fsp XYZ</span>
-     LABLAXIS             = <span class="sgr36">ela_fgs_igrf_labl</span>
-
 <span class="sgr32">  ela_fgs_att_flag</span>   (3 × 0)
     Datatype:    <span class="sgr1">Int8</span>
     Dimensions:  nothing × ela_fgs_fsp_time
@@ -623,6 +140,8 @@ Group: ela_l1_fgs
      FORMAT               = <span class="sgr36">i1</span>
      VAR_TYPE             = <span class="sgr36">data</span>
 
+<span class="sgr31">Support variables: </span><span class="sgr1">ela_fgs_time, ela_fgs_fsp_time</span>
+<span class="sgr31">Metadata variables: </span><span class="sgr1">ela_fgs_labl, ela_fgs_fsp_labl, ela_fgs_igrf_labl</span>
 <span class="sgr31">Global attributes</span>
   Project              = <span class="sgr36">[&quot;Electron Losses and Fields INvestigation&quot;]</span>
   Source_name          = <span class="sgr36">[&quot;ela&gt;Electron Losses and Fields INvestigation-A&quot;]</span>
@@ -704,7 +223,7 @@ ELA_PEF_HS_EPAT_NFLUX(&quot;2020-10-01&quot;, &quot;2020-10-02&quot;)
    FORMAT               = <span class="sgr36">F12.8</span>
    VAR_TYPE             = <span class="sgr36">data</span>
    LABLAXIS             = <span class="sgr36">nflux</span>
-</code></pre><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><h3 id="Instruments"><a class="docs-heading-anchor" href="#Instruments">Instruments</a><a id="Instruments-1"></a><a class="docs-heading-anchor-permalink" href="#Instruments" title="Permalink"></a></h3><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.EPD" href="#ELFINData.EPD"><code>ELFINData.EPD</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Energetic Particle Detector (EPD)</p><blockquote><p>The EPD consists of two heads: an electron head that measures 50 keV to 5 MeV electrons and an ion head that measures 50 to 5000 keV ions.</p></blockquote><p>Datasets: </p><ul><li>ELFIN A: <a href="#ELFINData.ELA_L1_EPDEF"><code>ELA_L1_EPDEF</code></a>, <a href="#ELFINData.ELA_L1_EPDIF"><code>ELA_L1_EPDIF</code></a>, <a href="#ELFINData.ELA_L2_EPDEF"><code>ELA_L2_EPDEF</code></a></li><li>ELFIN B: <a href="#ELFINData.ELB_L1_EPDEF"><code>ELB_L1_EPDEF</code></a>, <a href="#ELFINData.ELB_L1_EPDIF"><code>ELB_L1_EPDIF</code></a>, <a href="#ELFINData.ELB_L2_EPDEF"><code>ELB_L2_EPDEF</code></a></li></ul></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L55-L63">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.FGM" href="#ELFINData.FGM"><code>ELFINData.FGM</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Fluxgate Magnetometer (FGM)</p><p>Datasets: <a href="#ELFINData.ELA_L1_FGS"><code>ELA_L1_FGS</code></a>, <a href="#ELFINData.ELB_L1_FGS"><code>ELB_L1_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/fgm.jl#L25-L29">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.STATE" href="#ELFINData.STATE"><code>ELFINData.STATE</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>State data (STATE)</p><p>Datasets: <a href="#ELFINData.ELA_L1_STATE"><code>ELA_L1_STATE</code></a>, <a href="#ELFINData.ELB_L1_STATE"><code>ELB_L1_STATE</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/state.jl#L22-L26">source</a></section></article><h3 id="Datasets"><a class="docs-heading-anchor" href="#Datasets">Datasets</a><a id="Datasets-1"></a><a class="docs-heading-anchor-permalink" href="#Datasets" title="Permalink"></a></h3><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_EPDEF" href="#ELFINData.ELA_L1_EPDEF"><code>ELFINData.ELA_L1_EPDEF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> EPD Electron Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L1">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_EPDIF" href="#ELFINData.ELA_L1_EPDIF"><code>ELFINData.ELA_L1_EPDIF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> EPD Ion Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L21">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_FGS" href="#ELFINData.ELA_L1_FGS"><code>ELFINData.ELA_L1_FGS</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> FGM Survey (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_FGS"><code>ELA_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/fgm.jl#L4-L8">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_MRMA" href="#ELFINData.ELA_L1_MRMA"><code>ELFINData.ELA_L1_MRMA</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> MRMA (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_MRMA"><code>ELA_MRMA</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L3-L7">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_MRMI" href="#ELFINData.ELA_L1_MRMI"><code>ELFINData.ELA_L1_MRMI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> MRMI (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_MRMI"><code>ELA_MRMI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L16-L20">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L1_STATE" href="#ELFINData.ELA_L1_STATE"><code>ELFINData.ELA_L1_STATE</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A <em>L1</em> State (Version 2)</p><p>Main data variables: <a href="#ELFINData.ELA_POS_GEI"><code>ELA_POS_GEI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/state.jl#L2-L6">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_L2_EPDEF" href="#ELFINData.ELA_L2_EPDEF"><code>ELFINData.ELA_L2_EPDEF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A L2 EPD Electron Counts (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_PEF_HS_EPAT_NFLUX"><code>ELA_PEF_HS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELA_PEF_FS_EPAT_NFLUX"><code>ELA_PEF_FS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELA_PEF_HS_EPAT_EFLUX"><code>ELA_PEF_HS_EPAT_EFLUX</code></a>, <a href="#ELFINData.ELA_PEF_FS_EPAT_EFLUX"><code>ELA_PEF_FS_EPAT_EFLUX</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L7-L11">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_EPDEF" href="#ELFINData.ELB_L1_EPDEF"><code>ELFINData.ELB_L1_EPDEF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> EPD Electron Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L4">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_EPDIF" href="#ELFINData.ELB_L1_EPDIF"><code>ELFINData.ELB_L1_EPDIF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> EPD Ion Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L24">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_FGS" href="#ELFINData.ELB_L1_FGS"><code>ELFINData.ELB_L1_FGS</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> FGM Survey (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_FGS"><code>ELB_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/fgm.jl#L11-L15">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_MRMA" href="#ELFINData.ELB_L1_MRMA"><code>ELFINData.ELB_L1_MRMA</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> MRMA (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_MRMA"><code>ELB_MRMA</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L9-L13">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_MRMI" href="#ELFINData.ELB_L1_MRMI"><code>ELFINData.ELB_L1_MRMI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> MRMI (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_MRMI"><code>ELB_MRMI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L21-L25">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L1_STATE" href="#ELFINData.ELB_L1_STATE"><code>ELFINData.ELB_L1_STATE</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B <em>L1</em> State (Version 2)</p><p>Main data variables: <a href="#ELFINData.ELB_POS_GEI"><code>ELB_POS_GEI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/state.jl#L8-L12">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_L2_EPDEF" href="#ELFINData.ELB_L2_EPDEF"><code>ELFINData.ELB_L2_EPDEF</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B L2 EPD Electron Counts (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_PEF_HS_EPAT_NFLUX"><code>ELB_PEF_HS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELB_PEF_FS_EPAT_NFLUX"><code>ELB_PEF_FS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELB_PEF_HS_EPAT_EFLUX"><code>ELB_PEF_HS_EPAT_EFLUX</code></a>, <a href="#ELFINData.ELB_PEF_FS_EPAT_EFLUX"><code>ELB_PEF_FS_EPAT_EFLUX</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L14-L18">source</a></section></article><h3 id="Variables"><a class="docs-heading-anchor" href="#Variables">Variables</a><a id="Variables-1"></a><a class="docs-heading-anchor-permalink" href="#Variables" title="Permalink"></a></h3><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_FGS" href="#ELFINData.ELA_FGS"><code>ELFINData.ELA_FGS</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A FGM Magnetic field B in XYZ Sensor Coordinates, Survey Mode</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/fgm.jl#L19">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_MRMA" href="#ELFINData.ELA_MRMA"><code>ELFINData.ELA_MRMA</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Magnetic field XYZ Sensor data collected by ACB, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L27">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_MRMI" href="#ELFINData.ELA_MRMI"><code>ELFINData.ELA_MRMI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Magnetic field XYZ Sensor data collected by IDPU, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L32">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_PEF_FS_EPAT_EFLUX" href="#ELFINData.ELA_PEF_FS_EPAT_EFLUX"><code>ELFINData.ELA_PEF_FS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A EnergyPitchAngleTime spectra eflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L43">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_PEF_FS_EPAT_NFLUX" href="#ELFINData.ELA_PEF_FS_EPAT_NFLUX"><code>ELFINData.ELA_PEF_FS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A EnergyPitchAngleTime spectra nflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L35">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_PEF_HS_EPAT_EFLUX" href="#ELFINData.ELA_PEF_HS_EPAT_EFLUX"><code>ELFINData.ELA_PEF_HS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A EnergyPitchAngleTime spectra eflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L39">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_PEF_HS_EPAT_NFLUX" href="#ELFINData.ELA_PEF_HS_EPAT_NFLUX"><code>ELFINData.ELA_PEF_HS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A EnergyPitchAngleTime spectra nflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L31">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELA_POS_GEI" href="#ELFINData.ELA_POS_GEI"><code>ELFINData.ELA_POS_GEI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN A State Position XYZ in GEI coordinates</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/state.jl#L17">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_FGS" href="#ELFINData.ELB_FGS"><code>ELFINData.ELB_FGS</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B FGM Magnetic field B in XYZ Sensor Coordinates, Survey Mode</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/fgm.jl#L21">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_MRMA" href="#ELFINData.ELB_MRMA"><code>ELFINData.ELB_MRMA</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Magnetic field XYZ Sensor data collected by ACB, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L29">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_MRMI" href="#ELFINData.ELB_MRMI"><code>ELFINData.ELB_MRMI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>Magnetic field XYZ Sensor data collected by IDPU, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/mrmx.jl#L34">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_PEF_FS_EPAT_EFLUX" href="#ELFINData.ELB_PEF_FS_EPAT_EFLUX"><code>ELFINData.ELB_PEF_FS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B EnergyPitchAngleTime spectra eflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L45">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_PEF_FS_EPAT_NFLUX" href="#ELFINData.ELB_PEF_FS_EPAT_NFLUX"><code>ELFINData.ELB_PEF_FS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B EnergyPitchAngleTime spectra nflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L37">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_PEF_HS_EPAT_EFLUX" href="#ELFINData.ELB_PEF_HS_EPAT_EFLUX"><code>ELFINData.ELB_PEF_HS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B EnergyPitchAngleTime spectra eflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L41">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_PEF_HS_EPAT_NFLUX" href="#ELFINData.ELB_PEF_HS_EPAT_NFLUX"><code>ELFINData.ELB_PEF_HS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B EnergyPitchAngleTime spectra nflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L33">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.ELB_POS_GEI" href="#ELFINData.ELB_POS_GEI"><code>ELFINData.ELB_POS_GEI</code></a> — <span class="docstring-category">Constant</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><p>ELFIN B State Position XYZ in GEI coordinates</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/state.jl#L19">source</a></section></article><h3 id="Functions-and-Types"><a class="docs-heading-anchor" href="#Functions-and-Types">Functions and Types</a><a id="Functions-and-Types-1"></a><a class="docs-heading-anchor-permalink" href="#Functions-and-Types" title="Permalink"></a></h3><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="ELFINData.epd_spectral-Tuple" href="#ELFINData.epd_spectral-Tuple"><code>ELFINData.epd_spectral</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">epd_spectral(trange; probe = &quot;a&quot;, type = &quot;nflux&quot;, datatype = &quot;epdef&quot;, fullspin = false)</code></pre><p>Load ELFIN EPD L2 data and process it to extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/d7a475e4f987993f1b51b847ceec1698a4d2a2c6/src/epd.jl#L79-L83">source</a></section></article><h2 id="Validation-and-Benchmarking-with-PySPEDAS"><a class="docs-heading-anchor" href="#Validation-and-Benchmarking-with-PySPEDAS">Validation and Benchmarking with PySPEDAS</a><a id="Validation-and-Benchmarking-with-PySPEDAS-1"></a><a class="docs-heading-anchor-permalink" href="#Validation-and-Benchmarking-with-PySPEDAS" title="Permalink"></a></h2><p>We compare <code>ELFINData</code> results against <a href="https://pyspedas.readthedocs.io/en/latest/elfin.html">PySPEDAS</a> to ensure numerical parity and to track performance. The following benchmarks illustrate the typical workflow.</p><p>State variable <code>ELA_POS_GEI</code>: Julia is about 200 times faster than Python for this retrieval.</p><pre><code class="language-julia hljs">using PySPEDAS
+</code></pre><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><h3 id="Instruments"><a class="docs-heading-anchor" href="#Instruments">Instruments</a><a id="Instruments-1"></a><a class="docs-heading-anchor-permalink" href="#Instruments" title="Permalink"></a></h3><article><details class="docstring" open="true"><summary id="ELFINData.EPD"><a class="docstring-binding" href="#ELFINData.EPD"><code>ELFINData.EPD</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Energetic Particle Detector (EPD)</p><blockquote><p>The EPD consists of two heads: an electron head that measures 50 keV to 5 MeV electrons and an ion head that measures 50 to 5000 keV ions.</p></blockquote><p>Datasets: </p><ul><li>ELFIN A: <a href="#ELFINData.ELA_L1_EPDEF"><code>ELA_L1_EPDEF</code></a>, <a href="#ELFINData.ELA_L1_EPDIF"><code>ELA_L1_EPDIF</code></a>, <a href="#ELFINData.ELA_L2_EPDEF"><code>ELA_L2_EPDEF</code></a></li><li>ELFIN B: <a href="#ELFINData.ELB_L1_EPDEF"><code>ELB_L1_EPDEF</code></a>, <a href="#ELFINData.ELB_L1_EPDIF"><code>ELB_L1_EPDIF</code></a>, <a href="#ELFINData.ELB_L2_EPDEF"><code>ELB_L2_EPDEF</code></a></li></ul></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L55-L63">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.FGM"><a class="docstring-binding" href="#ELFINData.FGM"><code>ELFINData.FGM</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Fluxgate Magnetometer (FGM)</p><p>Datasets: <a href="#ELFINData.ELA_L1_FGS"><code>ELA_L1_FGS</code></a>, <a href="#ELFINData.ELB_L1_FGS"><code>ELB_L1_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/fgm.jl#L25-L29">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.STATE"><a class="docstring-binding" href="#ELFINData.STATE"><code>ELFINData.STATE</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>State data (STATE)</p><p>Datasets: <a href="#ELFINData.ELA_L1_STATE"><code>ELA_L1_STATE</code></a>, <a href="#ELFINData.ELB_L1_STATE"><code>ELB_L1_STATE</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/state.jl#L22-L26">source</a></section></details></article><h3 id="Datasets"><a class="docs-heading-anchor" href="#Datasets">Datasets</a><a id="Datasets-1"></a><a class="docs-heading-anchor-permalink" href="#Datasets" title="Permalink"></a></h3><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_EPDEF"><a class="docstring-binding" href="#ELFINData.ELA_L1_EPDEF"><code>ELFINData.ELA_L1_EPDEF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> EPD Electron Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L1">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_EPDIF"><a class="docstring-binding" href="#ELFINData.ELA_L1_EPDIF"><code>ELFINData.ELA_L1_EPDIF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> EPD Ion Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L21">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_FGS"><a class="docstring-binding" href="#ELFINData.ELA_L1_FGS"><code>ELFINData.ELA_L1_FGS</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> FGM Survey (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_FGS"><code>ELA_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/fgm.jl#L4-L8">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_MRMA"><a class="docstring-binding" href="#ELFINData.ELA_L1_MRMA"><code>ELFINData.ELA_L1_MRMA</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> MRMA (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_MRMA"><code>ELA_MRMA</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L3-L7">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_MRMI"><a class="docstring-binding" href="#ELFINData.ELA_L1_MRMI"><code>ELFINData.ELA_L1_MRMI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> MRMI (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_MRMI"><code>ELA_MRMI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L16-L20">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L1_STATE"><a class="docstring-binding" href="#ELFINData.ELA_L1_STATE"><code>ELFINData.ELA_L1_STATE</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A <em>L1</em> State (Version 2)</p><p>Main data variables: <a href="#ELFINData.ELA_POS_GEI"><code>ELA_POS_GEI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/state.jl#L2-L6">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_L2_EPDEF"><a class="docstring-binding" href="#ELFINData.ELA_L2_EPDEF"><code>ELFINData.ELA_L2_EPDEF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A L2 EPD Electron Counts (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELA_PEF_HS_EPAT_NFLUX"><code>ELA_PEF_HS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELA_PEF_FS_EPAT_NFLUX"><code>ELA_PEF_FS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELA_PEF_HS_EPAT_EFLUX"><code>ELA_PEF_HS_EPAT_EFLUX</code></a>, <a href="#ELFINData.ELA_PEF_FS_EPAT_EFLUX"><code>ELA_PEF_FS_EPAT_EFLUX</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L7-L11">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_EPDEF"><a class="docstring-binding" href="#ELFINData.ELB_L1_EPDEF"><code>ELFINData.ELB_L1_EPDEF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> EPD Electron Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L4">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_EPDIF"><a class="docstring-binding" href="#ELFINData.ELB_L1_EPDIF"><code>ELFINData.ELB_L1_EPDIF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> EPD Ion Counts (Version 1)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L24">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_FGS"><a class="docstring-binding" href="#ELFINData.ELB_L1_FGS"><code>ELFINData.ELB_L1_FGS</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> FGM Survey (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_FGS"><code>ELB_FGS</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/fgm.jl#L11-L15">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_MRMA"><a class="docstring-binding" href="#ELFINData.ELB_L1_MRMA"><code>ELFINData.ELB_L1_MRMA</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> MRMA (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_MRMA"><code>ELB_MRMA</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L9-L13">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_MRMI"><a class="docstring-binding" href="#ELFINData.ELB_L1_MRMI"><code>ELFINData.ELB_L1_MRMI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> MRMI (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_MRMI"><code>ELB_MRMI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L21-L25">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L1_STATE"><a class="docstring-binding" href="#ELFINData.ELB_L1_STATE"><code>ELFINData.ELB_L1_STATE</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B <em>L1</em> State (Version 2)</p><p>Main data variables: <a href="#ELFINData.ELB_POS_GEI"><code>ELB_POS_GEI</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/state.jl#L8-L12">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_L2_EPDEF"><a class="docstring-binding" href="#ELFINData.ELB_L2_EPDEF"><code>ELFINData.ELB_L2_EPDEF</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B L2 EPD Electron Counts (Version 1)</p><p>Main data variables: <a href="#ELFINData.ELB_PEF_HS_EPAT_NFLUX"><code>ELB_PEF_HS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELB_PEF_FS_EPAT_NFLUX"><code>ELB_PEF_FS_EPAT_NFLUX</code></a>, <a href="#ELFINData.ELB_PEF_HS_EPAT_EFLUX"><code>ELB_PEF_HS_EPAT_EFLUX</code></a>, <a href="#ELFINData.ELB_PEF_FS_EPAT_EFLUX"><code>ELB_PEF_FS_EPAT_EFLUX</code></a></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L14-L18">source</a></section></details></article><h3 id="Variables"><a class="docs-heading-anchor" href="#Variables">Variables</a><a id="Variables-1"></a><a class="docs-heading-anchor-permalink" href="#Variables" title="Permalink"></a></h3><article><details class="docstring" open="true"><summary id="ELFINData.ELA_FGS"><a class="docstring-binding" href="#ELFINData.ELA_FGS"><code>ELFINData.ELA_FGS</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A FGM Magnetic field B in XYZ Sensor Coordinates, Survey Mode</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/fgm.jl#L19">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_MRMA"><a class="docstring-binding" href="#ELFINData.ELA_MRMA"><code>ELFINData.ELA_MRMA</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Magnetic field XYZ Sensor data collected by ACB, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L27">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_MRMI"><a class="docstring-binding" href="#ELFINData.ELA_MRMI"><code>ELFINData.ELA_MRMI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Magnetic field XYZ Sensor data collected by IDPU, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L32">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_PEF_FS_EPAT_EFLUX"><a class="docstring-binding" href="#ELFINData.ELA_PEF_FS_EPAT_EFLUX"><code>ELFINData.ELA_PEF_FS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A EnergyPitchAngleTime spectra eflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L43">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_PEF_FS_EPAT_NFLUX"><a class="docstring-binding" href="#ELFINData.ELA_PEF_FS_EPAT_NFLUX"><code>ELFINData.ELA_PEF_FS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A EnergyPitchAngleTime spectra nflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L35">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_PEF_HS_EPAT_EFLUX"><a class="docstring-binding" href="#ELFINData.ELA_PEF_HS_EPAT_EFLUX"><code>ELFINData.ELA_PEF_HS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A EnergyPitchAngleTime spectra eflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L39">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_PEF_HS_EPAT_NFLUX"><a class="docstring-binding" href="#ELFINData.ELA_PEF_HS_EPAT_NFLUX"><code>ELFINData.ELA_PEF_HS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A EnergyPitchAngleTime spectra nflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L31">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELA_POS_GEI"><a class="docstring-binding" href="#ELFINData.ELA_POS_GEI"><code>ELFINData.ELA_POS_GEI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN A State Position XYZ in GEI coordinates</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/state.jl#L17">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_FGS"><a class="docstring-binding" href="#ELFINData.ELB_FGS"><code>ELFINData.ELB_FGS</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B FGM Magnetic field B in XYZ Sensor Coordinates, Survey Mode</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/fgm.jl#L21">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_MRMA"><a class="docstring-binding" href="#ELFINData.ELB_MRMA"><code>ELFINData.ELB_MRMA</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Magnetic field XYZ Sensor data collected by ACB, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L29">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_MRMI"><a class="docstring-binding" href="#ELFINData.ELB_MRMI"><code>ELFINData.ELB_MRMI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>Magnetic field XYZ Sensor data collected by IDPU, Sensor Coordinates, ADC units</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/mrmx.jl#L34">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_PEF_FS_EPAT_EFLUX"><a class="docstring-binding" href="#ELFINData.ELB_PEF_FS_EPAT_EFLUX"><code>ELFINData.ELB_PEF_FS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B EnergyPitchAngleTime spectra eflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L45">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_PEF_FS_EPAT_NFLUX"><a class="docstring-binding" href="#ELFINData.ELB_PEF_FS_EPAT_NFLUX"><code>ELFINData.ELB_PEF_FS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B EnergyPitchAngleTime spectra nflux, full spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L37">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_PEF_HS_EPAT_EFLUX"><a class="docstring-binding" href="#ELFINData.ELB_PEF_HS_EPAT_EFLUX"><code>ELFINData.ELB_PEF_HS_EPAT_EFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B EnergyPitchAngleTime spectra eflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L41">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_PEF_HS_EPAT_NFLUX"><a class="docstring-binding" href="#ELFINData.ELB_PEF_HS_EPAT_NFLUX"><code>ELFINData.ELB_PEF_HS_EPAT_NFLUX</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B EnergyPitchAngleTime spectra nflux, half spin resolution</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L33">source</a></section></details></article><article><details class="docstring" open="true"><summary id="ELFINData.ELB_POS_GEI"><a class="docstring-binding" href="#ELFINData.ELB_POS_GEI"><code>ELFINData.ELB_POS_GEI</code></a> — <span class="docstring-category">Constant</span></summary><section><div><p>ELFIN B State Position XYZ in GEI coordinates</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/state.jl#L19">source</a></section></details></article><h3 id="Functions-and-Types"><a class="docs-heading-anchor" href="#Functions-and-Types">Functions and Types</a><a id="Functions-and-Types-1"></a><a class="docs-heading-anchor-permalink" href="#Functions-and-Types" title="Permalink"></a></h3><article><details class="docstring" open="true"><summary id="ELFINData.epd_spectral-Tuple"><a class="docstring-binding" href="#ELFINData.epd_spectral-Tuple"><code>ELFINData.epd_spectral</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">epd_spectral(trange; probe = &quot;a&quot;, type = &quot;nflux&quot;, datatype = &quot;epdef&quot;, fullspin = false)</code></pre><p>Load ELFIN EPD L2 data and process it to extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaSpacePhysics/ELFINData.jl/blob/a1f63be4cb34c53db03e1e7ef49a5b0f2a697893/src/epd.jl#L79-L83">source</a></section></details></article><h2 id="Validation-and-Benchmarking-with-PySPEDAS"><a class="docs-heading-anchor" href="#Validation-and-Benchmarking-with-PySPEDAS">Validation and Benchmarking with PySPEDAS</a><a id="Validation-and-Benchmarking-with-PySPEDAS-1"></a><a class="docs-heading-anchor-permalink" href="#Validation-and-Benchmarking-with-PySPEDAS" title="Permalink"></a></h2><p>We compare <code>ELFINData</code> results against <a href="https://pyspedas.readthedocs.io/en/latest/elfin.html">PySPEDAS</a> to ensure numerical parity and to track performance. The following benchmarks illustrate the typical workflow.</p><p>State variable <code>ELA_POS_GEI</code>: Julia is about 200 times faster than Python for this retrieval.</p><pre><code class="language-julia hljs">using PySPEDAS
 using ELFINData
 using Chairmarks
 
@@ -712,38 +231,38 @@ trange = (&quot;2021-08-08&quot;, &quot;2021-08-10&quot;)
 ela_pos_gei = ELA_POS_GEI(trange)
 py_ela_pos_gei = Array(PySPEDAS.elfin.state(trange).ela_pos_gei)
 @assert ela_pos_gei == py_ela_pos_gei&#39;
-@b Array(ELA_POS_GEI(trange)), PySPEDAS.elfin.state(trange), pyspedas.projects.elfin.state(trange)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(1.116 ms (249 allocs: 3.966 MiB, without a warmup), 3.133 s (841 allocs: 31.656 KiB, without a warmup), 3.169 s (52 allocs: 2.391 KiB, 0.14% compile time, without a warmup))</code></pre><p>Processing EPD L2 spectra: Julia is about 100 times faster than Python for spectral derivations across the same interval.</p><pre><code class="language-julia hljs">trange = (&quot;2020-10-01&quot;, &quot;2020-10-02&quot;)
+@b Array(ELA_POS_GEI(trange)), PySPEDAS.elfin.state(trange), pyspedas.projects.elfin.state(trange)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(838.174 μs (425 allocs: 3.973 MiB, without a warmup), 4.229 s (842 allocs: 31.672 KiB, without a warmup), 4.270 s (52 allocs: 2.391 KiB, 0.12% compile time, without a warmup))</code></pre><p>Processing EPD L2 spectra: Julia is about 100 times faster than Python for spectral derivations across the same interval.</p><pre><code class="language-julia hljs">trange = (&quot;2020-10-01&quot;, &quot;2020-10-02&quot;)
 nflux_para = epd_spectral(trange).para
 py_nflux_para = PySPEDAS.elfin.epd(trange; level = &quot;l2&quot;).ela_pef_hs_nflux_para
 @assert nflux_para ≈ Array(py_nflux_para)&#39;
 b1 = @b epd_spectral($trange)
 b2 = @b PySPEDAS.elfin.epd($trange; level = &quot;l2&quot;)
 @info &quot;Julia&quot; b1
-@info &quot;PySPEDAS&quot; b2</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">03-Nov-25 17:15:30: ELFIN EPD: START LOADING.
-03-Nov-25 17:15:30: Downloading remote index: https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/
-03-Nov-25 17:15:32: Downloading https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf to elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf
-03-Nov-25 17:15:32: Download of elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf complete, 9.063 MB in 0.3 sec (29.375 MB/sec) (transfer_normal)
-03-Nov-25 17:15:32: Unable to get ydata for variable ela_pef_Tspin
-03-Nov-25 17:15:32: Variable ela_pef_hs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 10. Removing attribute.
-03-Nov-25 17:15:32: Variable ela_pef_fs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 18. Removing attribute.
-03-Nov-25 17:15:32: ELFIN EPD: LOADING END.
-03-Nov-25 17:15:32: ELFIN EPD L2: START PROCESSING.
-03-Nov-25 17:15:32: ELFIN EPD L2: START ENERGY SPECTOGRAM.
-03-Nov-25 17:15:32: ELFIN EPD L2: START PITCH ANGLE SPECTOGRAM.
-03-Nov-25 17:15:32: Energy channel [(0, 2), (3, 5), (6, 8), (9, 15)] are used for epd l2 pitch angle spectra.
-03-Nov-25 17:15:34: ELFIN EPD: START LOADING.
-03-Nov-25 17:15:34: Downloading remote index: https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/
-03-Nov-25 17:15:35: Downloading https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf to elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf
-03-Nov-25 17:15:35: Download of elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf complete, 9.063 MB in 0.3 sec (29.400 MB/sec) (transfer_normal)
-03-Nov-25 17:15:36: Unable to get ydata for variable ela_pef_Tspin
-03-Nov-25 17:15:36: Variable ela_pef_hs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 10. Removing attribute.
-03-Nov-25 17:15:36: Variable ela_pef_fs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 18. Removing attribute.
-03-Nov-25 17:15:36: ELFIN EPD: LOADING END.
-03-Nov-25 17:15:36: ELFIN EPD L2: START PROCESSING.
-03-Nov-25 17:15:36: ELFIN EPD L2: START ENERGY SPECTOGRAM.
-03-Nov-25 17:15:36: ELFIN EPD L2: START PITCH ANGLE SPECTOGRAM.
-03-Nov-25 17:15:36: Energy channel [(0, 2), (3, 5), (6, 8), (9, 15)] are used for epd l2 pitch angle spectra.
+@info &quot;PySPEDAS&quot; b2</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">05-Dec-25 20:50:36: ELFIN EPD: START LOADING.
+05-Dec-25 20:50:36: Downloading remote index: https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/
+05-Dec-25 20:50:39: Downloading https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf to elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf
+05-Dec-25 20:50:39: Download of elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf complete, 9.063 MB in 0.8 sec (11.563 MB/sec) (transfer_normal)
+05-Dec-25 20:50:39: Unable to get ydata for variable ela_pef_Tspin
+05-Dec-25 20:50:39: Variable ela_pef_hs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 10. Removing attribute.
+05-Dec-25 20:50:39: Variable ela_pef_fs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 18. Removing attribute.
+05-Dec-25 20:50:39: ELFIN EPD: LOADING END.
+05-Dec-25 20:50:39: ELFIN EPD L2: START PROCESSING.
+05-Dec-25 20:50:39: ELFIN EPD L2: START ENERGY SPECTOGRAM.
+05-Dec-25 20:50:39: ELFIN EPD L2: START PITCH ANGLE SPECTOGRAM.
+05-Dec-25 20:50:39: Energy channel [(0, 2), (3, 5), (6, 8), (9, 15)] are used for epd l2 pitch angle spectra.
+05-Dec-25 20:50:41: ELFIN EPD: START LOADING.
+05-Dec-25 20:50:41: Downloading remote index: https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/
+05-Dec-25 20:50:43: Downloading https://data.elfin.ucla.edu/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf to elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf
+05-Dec-25 20:50:43: Download of elfin_data/ela/l2/epd/fast/electron/2020/ela_l2_epdef_20201001_v01.cdf complete, 9.063 MB in 0.8 sec (11.488 MB/sec) (transfer_normal)
+05-Dec-25 20:50:43: Unable to get ydata for variable ela_pef_Tspin
+05-Dec-25 20:50:43: Variable ela_pef_hs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 10. Removing attribute.
+05-Dec-25 20:50:43: Variable ela_pef_fs_epa_spec DEPEND_1 attribute ela_pef_energies_mean has length 16, but corresponding data dimension has length 18. Removing attribute.
+05-Dec-25 20:50:43: ELFIN EPD: LOADING END.
+05-Dec-25 20:50:43: ELFIN EPD L2: START PROCESSING.
+05-Dec-25 20:50:43: ELFIN EPD L2: START ENERGY SPECTOGRAM.
+05-Dec-25 20:50:44: ELFIN EPD L2: START PITCH ANGLE SPECTOGRAM.
+05-Dec-25 20:50:44: Energy channel [(0, 2), (3, 5), (6, 8), (9, 15)] are used for epd l2 pitch angle spectra.
 <span class="sgr36"><span class="sgr1">┌ Info: </span></span>Julia
-<span class="sgr36"><span class="sgr1">└ </span></span>  b1 = 2.147 ms (941 allocs: 1.746 MiB)
+<span class="sgr36"><span class="sgr1">└ </span></span>  b1 = 2.217 ms (1106 allocs: 1.754 MiB)
 <span class="sgr36"><span class="sgr1">┌ Info: </span></span>PySPEDAS
-<span class="sgr36"><span class="sgr1">└ </span></span>  b2 = 2.043 s (1089 allocs: 44.984 KiB, without a warmup)</code></pre><div class="admonition is-info" id="Array-layout-e4769507e65a8fef"><header class="admonition-header">Array layout<a class="admonition-anchor" href="#Array-layout-e4769507e65a8fef" title="Permalink"></a></header><div class="admonition-body"><p>Julia arrays follow the column-major convention used by most CDF files (time is the last dimension), whereas NumPy and PySPEDAS use row-major arrays (time is the first dimension). Transpose the PySPEDAS output before comparing so the dimensions align.</p></div></div></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.15.0 on <span class="colophon-date" title="Monday 3 November 2025 17:15">Monday 3 November 2025</span>. Using Julia version 1.12.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<span class="sgr36"><span class="sgr1">└ </span></span>  b2 = 2.532 s (1089 allocs: 44.984 KiB, without a warmup)</code></pre><div class="admonition is-info" id="Array-layout-7b7551a93dccefce"><header class="admonition-header">Array layout<a class="admonition-anchor" href="#Array-layout-7b7551a93dccefce" title="Permalink"></a></header><div class="admonition-body"><p>Julia arrays follow the column-major convention used by most CDF files (time is the last dimension), whereas NumPy and PySPEDAS use row-major arrays (time is the first dimension). Transpose the PySPEDAS output before comparing so the dimensions align.</p></div></div></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 5 December 2025 20:50">Friday 5 December 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
