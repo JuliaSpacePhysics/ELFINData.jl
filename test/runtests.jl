@@ -36,7 +36,7 @@ end
 
 @testset "URL patterns" begin
     using Dates
-    @test ELFINData._overplots_pattern("a", "24hr")(Date(2022,9,10)) == "https://data.elfin.ucla.edu/ela/overplots/2022/09/10/ela_l2_overview_20220910_24hr.gif"
+    @test ELFINData._overplots_pattern("a", "24hr")(Date(2022, 9, 10)) == "https://data.elfin.ucla.edu/ela/overplots/2022/09/10/ela_l2_overview_20220910_24hr.gif"
 end
 
 @test epd_spectral(trange).para[:, 1] == Float32[20541.432, 11046.116, 2887.873, 3359.2217, 434.48523, 173.7941, 0.0, 152.99594, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 85.875145]

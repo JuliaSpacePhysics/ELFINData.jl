@@ -51,6 +51,14 @@ const EPD_ENERGY_BINS = Float32[63.2455, 97.9796, 138.564, 183.303, 238.118, 305
 const EPD_ENERGY_BINS_MIN = Float32[50.0, 80.0, 120.0, 160.0, 210.0, 270.0, 345.0, 430.0, 630.0, 900.0, 1300.0, 1800.0, 2500.0, 3350.0, 4150.0, 5800.0]
 const EPD_ENERGY_BINS_MAX = Float32[80.0, 120.0, 160.0, 210.0, 270.0, 345.0, 430.0, 630.0, 900.0, 1300.0, 1800.0, 2500.0, 3350.0, 4150.0, 5800.0, 8000.0]
 
+const EPD_metadata_patch = Dict(
+    :anti => Dict("LABLAXIS" => "anti nflux"),
+    :para => Dict("LABLAXIS" => "para nflux"),
+    :omni => Dict("LABLAXIS" => "omni nflux"),
+    :perp => Dict("LABLAXIS" => "perp nflux"),
+    :prec => Dict("LABLAXIS" => "prec nflux")
+)
+
 # EPD instrument
 """
 Energetic Particle Detector (EPD)
@@ -80,6 +88,12 @@ const EPD = ELFINInstrument(
     epd_spectral(trange; probe = "a", type = "nflux", datatype = "epdef", fullspin = false)
 
 Load ELFIN EPD L2 data and process it to extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.
+
+Returns a NamedTuple-like container with omni, para, anti, and prec flux spectra.
+
+```julia
+epd_spectral("2020-10-01", "2020-10-02")
+```
 """
 function epd_spectral(args...; probe = "a", type = "nflux", datatype = "epdef", fullspin = false, Espectra = (;), PAspectra = nothing, kw...)
     res = fullspin ? :fs : :hs
@@ -90,25 +104,20 @@ function epd_spectral(args...; probe = "a", type = "nflux", datatype = "epdef", 
     spec_data = datasets[spec_tvar]
 
     pitch_angles = CDF.dim(spec_data, 1)
-    loss_cone = Array(CDM.variable(spec_data, "$(base_var)_LCdeg"))
+    loss_cone = Array(datasets["$(base_var)_LCdeg"])
     S = Array(spec_data)
     energies = CDF.dim(spec_data, 2)
     times = DateTime.(CDF.dim(spec_data, ndims(spec_data)))
     Espectras = epd_l2_Espectra(S, pitch_angles, loss_cone; fullspin, Espectra...)
-    metadata = Dict(spec_data.attrib)
+    metadata = merge(spec_data.attrib, Dict("SCALETYP" => log10, :yscale => log10, :colorrange => (1.0e1, 1.0e7), :ylabel => "Energy (keV)"))
 
     return if isnothing(PAspectra)
-        # metadata[:ylabel] = "Energy (keV)"
-        # metadata[:yscale] = log10
-        # metadata[:colorscale] = log10
-        # metadata[:colorrange] = (1.0e3, 1.0e11)
-
         tdim = Ti(times)
         edim = Energy(vec(energies))
         prec = abs.(Espectras.para .- Espectras.anti)
         ds = DimStack((; Espectras..., prec), (edim, tdim); metadata)
         return maplayers(ds) do da
-            rebuild(da, metadata = copy(metadata))
+            rebuild(da, metadata = merge(metadata, get(EPD_metadata_patch, da.name, Dict())))
         end
     else
         sort_flux_by_pitch_angle!(S, pitch_angles)
@@ -124,19 +133,6 @@ end
 using DimensionalData: YDim, @dim
 @dim Energy YDim "Energy"
 
-"""
-    epd_spectra(flux, pitch_angles, loss_cone; flux_type="nflux", res="hs", para_tol=22.25, anti_tol=22.25)
-
-Process EPD L2 CDF data to create energy spectra for different flux directions from 3D pitch angle data.
-
-# Returns
-- DimStack containing omni, para, anti, and prec flux spectra
-
-# Example
-```julia
-spectra = epd_spectra(cdf_data, "a"; flux_type="nflux")
-```
-"""
 function epd_l2_Espectra(flux, pitch_angles, loss_cone; fullspin = false, kw...)
     # Determine nspinsectors based on resolution
     res = fullspin ? :fs : :hs
@@ -152,7 +148,7 @@ function epd_l2_Espectra(flux, pitch_angles, loss_cone; fullspin = false, kw...)
 end
 
 """
-    epd_pitch_angle_spectra(S; energybins=nothing, energies=nothing)
+    epd_l2_PAspectra(S; energybins=nothing, energies=nothing)
 
 Process EPD L2 CDF data to create pitch angle spectra following Python epd_l2_PAspectra logic.
 

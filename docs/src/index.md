@@ -6,7 +6,7 @@ CurrentModule = ELFINData
 
 [![DOI](https://zenodo.org/badge/1071121579.svg)](https://doi.org/10.5281/zenodo.17500124)
 
-`ELFINData.jl` provides a high-level Julia interface to the ELFIN mission's particle and field measurements. The sections below highlight the most common entry points and link to the auto-generated API reference.
+`ELFINData.jl` provides a high-level Julia interface to the [ELFIN](https://elfin.igpp.ucla.edu/) mission's particle and field measurements. The sections below highlight the most common entry points and link to the auto-generated API reference.
 
 ```@docs
 ELFINData
@@ -63,6 +63,23 @@ ELA_PEF_HS_EPAT_NFLUX("2020-10-01", "2020-10-02")
 # Alternative ways to access the same variable: 
 # `ELA_L2_EPDEF("2020-10-01", "2020-10-02")["ela_pef_hs_Epat_nflux"]` or 
 # `EPD("2020-10-01", "2020-10-02"; probe = "a", level = "l2", datatype = "epdef")["ela_pef_hs_Epat_nflux"]`
+```
+
+## Quick Plots
+
+```@example quick_plot
+using ELFINData
+using Dates
+using ELFINData.DimensionalData
+using SpacePhysicsMakie, WGLMakie
+
+# https://data.elfin.ucla.edu/ela/overplots/2022/09/05/ela_l2_overview_20220905_10_ndes.gif
+t0 = DateTime("2022-09-05T10:00:00")
+t1 = DateTime("2022-09-05T10:30:00")
+
+# Example: plot EPD flux spectra
+spectra = epd_spectral(t0, t1; probe = "a")[Ti(t0 .. t1)]
+tplot(degap.([spectra.omni, spectra.anti, spectra.perp, spectra.para]); colormap=:turbo)
 ```
 
 ## API
