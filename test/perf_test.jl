@@ -1,6 +1,7 @@
 using Chairmarks
 @time using ELFINData
-@b epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
+@time epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
+@info @b epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
 # 1.219 ms (1828 allocs: 1.904 MiB)
 
 
