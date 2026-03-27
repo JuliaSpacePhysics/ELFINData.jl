@@ -37,9 +37,7 @@ end
 _download(file::RemoteFile) = _download(file.uri.uri, file.path)
 _tranges(t0, t1; dt = Day(1)) = floor(DateTime(t0), dt):dt:(ceil(DateTime(t1), dt) - Millisecond(1))
 
-"""
-Download data for a given time range `[t0, t1)` using the `pattern`.
-"""
+# Download data for a given time range `[t0, t1)` using the `pattern`.
 function download_pattern(pattern, t0, t1; update::Bool = false, dir = "elfin_data", kw...)
     tranges = _tranges(t0, t1; kw...)
     outputs = map(tranges) do ti
