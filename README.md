@@ -1,6 +1,7 @@
 # ELFINData
 
 [![DOI](https://zenodo.org/badge/1071121579.svg)](https://doi.org/10.5281/zenodo.17500124)
+[![version](https://juliahub.com/docs/General/ELFINData/stable/version.svg)](https://juliahub.com/ui/Packages/General/ELFINData)
 
 [![Build Status](https://github.com/JuliaSpacePhysics/ELFINData.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaSpacePhysics/ELFINData.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl)
@@ -8,6 +9,8 @@
 Load and process data from the Electron Losses and Fields Investigation (ELFIN) mission.
 
 **Installation**: at the Julia REPL, run `using Pkg; Pkg.add("ELFINData")`
+
+**Agent skill**: at the terminal, run `npx skills add JuliaSpacePhysics/ELFINData.jl`
 
 **Documentation**: [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaSpacePhysics.github.io/ELFINData.jl/dev/)
 
