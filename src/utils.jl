@@ -37,8 +37,26 @@ end
 _download(file::RemoteFile) = _download(file.uri.uri, file.path)
 _tranges(t0, t1; dt = Day(1)) = floor(DateTime(t0), dt):dt:(ceil(DateTime(t1), dt) - Millisecond(1))
 
+default_data_dir() = get(ENV, "ELFIN_DATA_DIR", joinpath(homedir(), ".cache/JuliaSpacePhysics/elfin_data"))
+
+"""Data directory. Override with `ELFINData.DATA_DIR[] = "..."` or the `ELFIN_DATA_DIR` env var."""
+const DATA_DIR = Ref(default_data_dir())
+
+# Move ELFIN data files from `src` to `dst` (default: `DATA_DIR[]`).
+function migrate_data(src, dst = DATA_DIR[])
+    for (root, _, files) in walkdir(src)
+        rel = relpath(root, src)
+        for file in files
+            src_path = joinpath(root, file)
+            dst_path = joinpath(dst, rel, file)
+            mkpath(dirname(dst_path))
+            mv(src_path, dst_path; force = false)
+        end
+    end
+end
+
 # Download data for a given time range `[t0, t1)` using the `pattern`.
-function download_pattern(pattern, t0, t1; update::Bool = false, dir = "elfin_data", kw...)
+function download_pattern(pattern, t0, t1; update::Bool = false, dir = DATA_DIR[], kw...)
     tranges = _tranges(t0, t1; kw...)
     outputs = map(tranges) do ti
         url = pattern(ti)
