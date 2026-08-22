@@ -1,3 +1,5 @@
+const EPD_URL = FilePattern("$BASE_URL/{probe}/{level}/epd/fast/{head}/{t:yyyy}/{probe}_{level}_{datatype}_{t:yyyymmdd}_v{version}.cdf")
+
 const _EPD_VARIABLE_SPECS = (
     (level = L1, datatype = "epdef", variable = "pef", title = "EPD Electron Counts"),
     (level = L1, datatype = "epdif", variable = "pif", title = "EPD Ion Counts"),
@@ -22,8 +24,9 @@ const _EPD_DATASETS = Dict(
         main = join(("[`$(prefix)_$(uppercase(var.variable))`](@ref)" for var in _EPD_VARIABLE_SPECS
                      if var.level == spec.level && var.datatype == spec.datatype), ", ")
         main = isempty(main) ? "" : "\n\nMain data variables: $main"
-        doc = "ELFIN $(prefix[end]) *$(spec.level)* $(spec.title) (Version 1)$main"
-        dataset = ELFINLogicalDataset(_epd_pattern, name, probe, spec.level, spec.datatype, metadata; version = 1)
+        doc = "ELFIN $(prefix[end]) *$(spec.level)* $(spec.title)$main"
+        head = spec.datatype == "epdef" ? "electron" : "ion"
+        dataset = ELFINLogicalDataset(EPD_URL, name, probe, spec.level, spec.datatype, metadata; head)
         @eval @doc $doc const $name = $dataset
         (probe = lowercase(prefix[end:end]), level = lowercase(string(spec.level)), datatype = spec.datatype) => dataset
     end

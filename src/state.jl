@@ -1,16 +1,18 @@
 # State datasets
+const STATE_URL = FilePattern("$BASE_URL/{probe}/{level}/state/{datatype}/{t:yyyy}/{probe}_{level}_state_{datatype}_{t:yyyymmdd}_v{version}.cdf")
+
 """
-ELFIN A *L1* State (Version 2)
+ELFIN A *L1* State
 
 Main data variables: [`ELA_POS_GEI`](@ref)
 """
-const ELA_L1_STATE = ELFINLogicalDataset(_state_pattern, :ELA_L1_STATE, ELA, L1, "defn", Dict(); version = 2)
+const ELA_L1_STATE = ELFINLogicalDataset(STATE_URL, :ELA_L1_STATE, ELA, L1, "defn", Dict())
 """
-ELFIN B *L1* State (Version 2)
+ELFIN B *L1* State
 
 Main data variables: [`ELB_POS_GEI`](@ref)
 """
-const ELB_L1_STATE = ELFINLogicalDataset(_state_pattern, :ELB_L1_STATE, ELB, L1, "defn", Dict(); version = 2)
+const ELB_L1_STATE = ELFINLogicalDataset(STATE_URL, :ELB_L1_STATE, ELB, L1, "defn", Dict())
 
 
 # State variables

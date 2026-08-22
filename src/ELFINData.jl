@@ -1,6 +1,4 @@
 """
-Load and process data from the Electron Losses and Fields INvestigation (ELFIN) mission.
-
 # Instruments
 - [Fluxgate Magnetometer (FGM)](@ref FGM)
 - [Energetic Particle Detector (EPD)](@ref EPD)
@@ -11,8 +9,6 @@ Load and process data from the Electron Losses and Fields INvestigation (ELFIN) 
 
 # Functions
 - [`epd_spectral`](@ref epd_spectral): Load ELFIN EPD L2 data and extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.
-
-References: [Website](https://elfin.igpp.ucla.edu/), [NASA Science](https://science.nasa.gov/mission/elfin/), [Wikipedia](https://en.wikipedia.org/wiki/ELFIN), [DOI](https://doi.org/10.1007/s11214-020-00721-7)
 """
 module ELFINData
 using DimensionalData
@@ -21,11 +17,9 @@ using CDFDatasets: CDFDataset
 import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
 using SpaceDataModel: AbstractInstrument, AbstractDataSet
-using Downloads: request
+using SpaceDataModel: FilePattern, localize, remotefiles
 using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
 using Dates
-using Dates: format
-using URIs
 
 export ELA_L1_EPDEF, ELB_L1_EPDEF, ELA_L2_EPDEF, ELB_L2_EPDEF, ELA_L1_EPDIF, ELB_L1_EPDIF,
     ELA_PEF, ELB_PEF, ELA_PIF, ELB_PIF,
@@ -39,6 +33,7 @@ export EPD, FGM, STATE
 export epd_spectral
 
 const BASE_URL = "https://data.elfin.ucla.edu"
+const OVERPLOTS_URL = FilePattern("$BASE_URL/{probe}/overplots/{t:yyyy}/{t:mm}/{t:dd}/{probe}_{level}_overview_{t:yyyymmdd}_{datatype}.gif")
 
 @enum Probe begin
     ELA
@@ -51,17 +46,12 @@ end
 end
 
 include("types.jl")
-include("url_pattern.jl")
 include("epd.jl")
 include("fgm.jl")
 include("mrmx.jl")
 include("state.jl")
-include("utils.jl")
 
-
-"""
-Precipitating-to-trapped flux ratio
-"""
+"""Precipitating-to-trapped flux ratio"""
 function flux_ratio(prec, trap)
     f = prec ./ trap
     metadata = copy(prec.metadata)

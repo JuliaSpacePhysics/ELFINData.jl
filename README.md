@@ -1,7 +1,6 @@
 # ELFINData
 
 [![DOI](https://zenodo.org/badge/1071121579.svg)](https://doi.org/10.5281/zenodo.17500124)
-
 [![Coverage](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl)
 
 Load and process data from the Electron Losses and Fields Investigation (ELFIN) mission.
@@ -46,7 +45,6 @@ spectra[Ti(DateTime("2020-10-01T06:00") .. DateTime("2020-10-01T07:00"))]
 
 - **Time is the last dimension**
 - **Probe** is always a string: `"a"` or `"b"`
-- Files are cached in `elfin_data/` in the working directory
 - EPD has 16 log-spaced energy channels: ~63–6500 keV
 
 ### Dataset constants
@@ -85,4 +83,4 @@ Call with trange; return a `DimArray` directly:
 
 ## Elsewhere
 
-- [PySPEDAS](https://pyspedas.readthedocs.io/en/latest/elfin.html), [GitHub](https://github.com/spedas/pyspedas/tree/master/pyspedas/projects/elfin)
+- [PySPEDAS](https://pyspedas.readthedocs.io/en/latest/elfin.html) ([GitHub](https://github.com/spedas/pyspedas/tree/master/pyspedas/projects/elfin))
