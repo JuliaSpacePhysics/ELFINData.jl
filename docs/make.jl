@@ -1,5 +1,6 @@
 using ELFINData
 using Documenter
+using Bonito
 
 DocMeta.setdocmeta!(ELFINData, :DocTestSetup, :(using ELFINData); recursive = true)
 

@@ -40,13 +40,26 @@ function (var::ELFINLogicalVariable)(args...; kw...)
     return ds[var.variable]
 end
 
-struct ELFINInstrument{D, MD, F} <: AbstractInstrument
+struct ELFINInstrument{D, MD, K} <: AbstractInstrument
     name::String
     datasets::D
     metadata::MD
-    _lookup::F
+    defaults::K
 end
 
+@noinline function _unknown_dataset_selectors(defaults, kw)
+    unknown = setdiff(keys(kw), keys(defaults))
+    label = length(unknown) == 1 ? "selector" : "selectors"
+    throw(ArgumentError("unknown dataset $label: $(join(unknown, ", "))"))
+end
 
-(inst::ELFINInstrument)(; kw...) = inst._lookup(inst.datasets; kw...)
+(inst::ELFINInstrument)(; kw...) = select(inst.datasets, inst.defaults; kw...)
+
+function select(datasets::AbstractDict, defaults; kw...)
+    for key in keys(kw)
+        key in keys(defaults) || _unknown_dataset_selectors(defaults, kw)
+    end
+    return datasets[merge(defaults, (; kw...))]
+end
+
 (inst::ELFINInstrument)(args...; update = false, kw...) = inst(; kw...)(args...; update)

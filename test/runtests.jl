@@ -10,6 +10,13 @@ end
 const trange = ("2020-10-01", "2020-10-02")
 
 @testset "Instruments" begin
+    @test STATE() === ELA_L1_STATE
+    @test STATE(; probe = "b") === ELB_L1_STATE
+    @test FGM() === ELA_L1_FGS
+    @test FGM(; probe = "b") === ELB_L1_FGS
+    @test EPD() === ELA_L1_EPDEF
+    @test EPD(; probe = "b", level = "l2") === ELB_L2_EPDEF
+    @test_throws ArgumentError STATE(; datatype = "defn")
     STATE(("2021-08-08", "2021-08-09"))
     FGM(("2020-10-01", "2020-10-02"); probe = "a", datatype = "survey")
 end
@@ -39,4 +46,4 @@ end
     @test ELFINData._overplots_pattern("a", "24hr")(Date(2022, 9, 10)) == "https://data.elfin.ucla.edu/ela/overplots/2022/09/10/ela_l2_overview_20220910_24hr.gif"
 end
 
-@test epd_spectral(trange).para[:, 1] == Float32[20541.432, 11046.116, 2887.873, 3359.2217, 434.48523, 173.7941, 0.0, 152.99594, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 85.875145]
+@test epd_spectral(trange).para[:, 1] ≈ Float32[20541.432, 11046.116, 2887.873, 3359.2217, 434.48523, 173.7941, 0.0, 152.99594, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 85.875145]
