@@ -30,7 +30,7 @@ end
 
 (ds::ELFINLogicalDataset)(t0, t1; kw...) = begin
     files = download_pattern(ds.url_pattern, t0, t1; kw...)
-    ConcatCDFDataset(files)
+    CDFDataset(files)
 end
 
 (ds::ELFINLogicalDataset)(trange::Union{Tuple, Vector, Pair}; kw...) = ds(trange...; kw...)
