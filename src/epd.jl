@@ -1,49 +1,43 @@
-"""ELFIN A *L1* EPD Electron Counts (Version 1)"""
-const ELA_L1_EPDEF = ELFINLogicalDataset(_epd_pattern, :ELA_L1_EPDEF, ELA, L1, "epdef", Dict(); version = 1)
+const _EPD_VARIABLE_SPECS = (
+    (level = L1, datatype = "epdef", variable = "pef", title = "EPD Electron Counts"),
+    (level = L1, datatype = "epdif", variable = "pif", title = "EPD Ion Counts"),
+    (level = L2, datatype = "epdef", variable = "pef_hs_Epat_nflux", title = "EnergyPitchAngleTime spectra nflux, half spin resolution"),
+    (level = L2, datatype = "epdef", variable = "pef_fs_Epat_nflux", title = "EnergyPitchAngleTime spectra nflux, full spin resolution"),
+    (level = L2, datatype = "epdef", variable = "pef_hs_Epat_eflux", title = "EnergyPitchAngleTime spectra eflux, half spin resolution"),
+    (level = L2, datatype = "epdef", variable = "pef_fs_Epat_eflux", title = "EnergyPitchAngleTime spectra eflux, full spin resolution"),
+)
 
-"""ELFIN B *L1* EPD Electron Counts (Version 1)"""
-const ELB_L1_EPDEF = ELFINLogicalDataset(_epd_pattern, :ELB_L1_EPDEF, ELB, L1, "epdef", Dict(); version = 1)
+const _EPD_DATASET_SPECS = (
+    (level = L1, datatype = "epdef", title = "EPD Electron Counts", description = nothing),
+    (level = L2, datatype = "epdef", title = "EPD Electron Counts", description = nothing),
+    (level = L1, datatype = "epdif", title = "EPD Ion Counts",
+        description = "[UNCALIBRATED RAW DATA ONLY] Energetic Particle Detector Energy Particles, Ions>keV"),
+)
 
-"""
-ELFIN A L2 EPD Electron Counts (Version 1)
+const _EPD_DATASETS = Dict(
+    let
+        prefix = string(probe)
+        name = Symbol(prefix, "_", spec.level, "_", uppercase(spec.datatype))
+        metadata = isnothing(spec.description) ? Dict() : Dict(:description => spec.description)
+        main = join(("[`$(prefix)_$(uppercase(var.variable))`](@ref)" for var in _EPD_VARIABLE_SPECS
+                     if var.level == spec.level && var.datatype == spec.datatype), ", ")
+        main = isempty(main) ? "" : "\n\nMain data variables: $main"
+        doc = "ELFIN $(prefix[end]) *$(spec.level)* $(spec.title) (Version 1)$main"
+        dataset = ELFINLogicalDataset(_epd_pattern, name, probe, spec.level, spec.datatype, metadata; version = 1)
+        @eval @doc $doc const $name = $dataset
+        (probe = lowercase(prefix[end:end]), level = lowercase(string(spec.level)), datatype = spec.datatype) => dataset
+    end
+    for spec in _EPD_DATASET_SPECS for probe in (ELA, ELB)
+)
 
-Main data variables: [`ELA_PEF_HS_EPAT_NFLUX`](@ref), [`ELA_PEF_FS_EPAT_NFLUX`](@ref), [`ELA_PEF_HS_EPAT_EFLUX`](@ref), [`ELA_PEF_FS_EPAT_EFLUX`](@ref)
-"""
-const ELA_L2_EPDEF = ELFINLogicalDataset(_epd_pattern, :ELA_L2_EPDEF, ELA, L2, "epdef", Dict(); version = 1)
-
-"""
-ELFIN B L2 EPD Electron Counts (Version 1)
-
-Main data variables: [`ELB_PEF_HS_EPAT_NFLUX`](@ref), [`ELB_PEF_FS_EPAT_NFLUX`](@ref), [`ELB_PEF_HS_EPAT_EFLUX`](@ref), [`ELB_PEF_FS_EPAT_EFLUX`](@ref)
-"""
-const ELB_L2_EPDEF = ELFINLogicalDataset(_epd_pattern, :ELB_L2_EPDEF, ELB, L2, "epdef", Dict(); version = 1)
-
-"""ELFIN A *L1* EPD Ion Counts (Version 1)"""
-const ELA_L1_EPDIF = ELFINLogicalDataset(_epd_pattern, :ELA_L1_EPDIF, ELA, L1, "epdif", Dict(:description => "[UNCALIBRATED RAW DATA ONLY] Energetic Partical Detector Energy Particles, Ions>keV"); version = 1)
-
-"""ELFIN B *L1* EPD Ion Counts (Version 1)"""
-const ELB_L1_EPDIF = ELFINLogicalDataset(_epd_pattern, :ELB_L1_EPDIF, ELB, L1, "epdif", Dict(:description => "[UNCALIBRATED RAW DATA ONLY] Energetic Partical Detector Energy Particles, Ions>keV"); version = 1)
-# EPD variables
-const ELA_PEF = ELFINLogicalVariable(ELA_L1_EPDEF, "ela_pef")
-const ELB_PEF = ELFINLogicalVariable(ELB_L1_EPDEF, "elb_pef")
-const ELA_PIF = ELFINLogicalVariable(ELA_L1_EPDIF, "ela_pif")
-const ELB_PIF = ELFINLogicalVariable(ELB_L1_EPDIF, "elb_pif")
-"""ELFIN A EnergyPitchAngleTime spectra nflux, half spin resolution"""
-const ELA_PEF_HS_EPAT_NFLUX = ELFINLogicalVariable(ELA_L2_EPDEF, "ela_pef_hs_Epat_nflux")
-"""ELFIN B EnergyPitchAngleTime spectra nflux, half spin resolution"""
-const ELB_PEF_HS_EPAT_NFLUX = ELFINLogicalVariable(ELB_L2_EPDEF, "elb_pef_hs_Epat_nflux")
-"""ELFIN A EnergyPitchAngleTime spectra nflux, full spin resolution"""
-const ELA_PEF_FS_EPAT_NFLUX = ELFINLogicalVariable(ELA_L2_EPDEF, "ela_pef_fs_Epat_nflux")
-"""ELFIN B EnergyPitchAngleTime spectra nflux, full spin resolution"""
-const ELB_PEF_FS_EPAT_NFLUX = ELFINLogicalVariable(ELB_L2_EPDEF, "elb_pef_fs_Epat_nflux")
-"""ELFIN A EnergyPitchAngleTime spectra eflux, half spin resolution"""
-const ELA_PEF_HS_EPAT_EFLUX = ELFINLogicalVariable(ELA_L2_EPDEF, "ela_pef_hs_Epat_eflux")
-"""ELFIN B EnergyPitchAngleTime spectra eflux, half spin resolution"""
-const ELB_PEF_HS_EPAT_EFLUX = ELFINLogicalVariable(ELB_L2_EPDEF, "elb_pef_hs_Epat_eflux")
-"""ELFIN A EnergyPitchAngleTime spectra eflux, full spin resolution"""
-const ELA_PEF_FS_EPAT_EFLUX = ELFINLogicalVariable(ELA_L2_EPDEF, "ela_pef_fs_Epat_eflux")
-"""ELFIN B EnergyPitchAngleTime spectra eflux, full spin resolution"""
-const ELB_PEF_FS_EPAT_EFLUX = ELFINLogicalVariable(ELB_L2_EPDEF, "elb_pef_fs_Epat_eflux")
+for spec in _EPD_VARIABLE_SPECS, probe in (ELA, ELB)
+    prefix = string(probe)
+    name = Symbol(prefix, "_", uppercase(spec.variable))
+    dataset = Symbol(prefix, "_", spec.level, "_", uppercase(spec.datatype))
+    variable = "el$(lowercase(prefix[end:end]))_$(spec.variable)"
+    doc = "ELFIN $(prefix[end]) $(spec.title)"
+    @eval @doc $doc const $name = ELFINLogicalVariable($dataset, $variable)
+end
 
 # Energy bins for EPD (16 channels, log-spaced from ~50 keV to ~5.8 MeV)
 # "ela_pef_energies_mean"
@@ -59,7 +53,6 @@ const EPD_metadata_patch = Dict(
     :prec => Dict("LABLAXIS" => "prec nflux")
 )
 
-# EPD instrument
 """
 Energetic Particle Detector (EPD)
 
@@ -70,18 +63,11 @@ Datasets:
 - ELFIN B: [`ELB_L1_EPDEF`](@ref), [`ELB_L1_EPDIF`](@ref), [`ELB_L2_EPDEF`](@ref)
 """
 const EPD = ELFINInstrument(
-    "epd", Dict(
-        ("a", "l1", "epdef") => ELA_L1_EPDEF,
-        ("b", "l1", "epdef") => ELB_L1_EPDEF,
-        ("a", "l1", "epdif") => ELA_L1_EPDIF,
-        ("b", "l1", "epdif") => ELB_L1_EPDIF,
-        ("a", "l2", "epdef") => ELA_L2_EPDEF,
-        ("b", "l2", "epdef") => ELB_L2_EPDEF,
-    ), Dict(
+    "epd", _EPD_DATASETS, Dict(
         "energies_mean" => EPD_ENERGY_BINS,
         "energies_min" => EPD_ENERGY_BINS_MIN,
         "energies_max" => EPD_ENERGY_BINS_MAX,
-    ), (datasets; probe = "a", level = "l1", datatype = "epdef") -> datasets[(probe, level, datatype)]
+    ), (probe = "a", level = "l1", datatype = "epdef")
 )
 
 """

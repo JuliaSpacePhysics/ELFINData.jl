@@ -26,7 +26,7 @@ Datasets: [`ELA_L1_STATE`](@ref), [`ELB_L1_STATE`](@ref)
 """
 const STATE = ELFINInstrument(
     "state", Dict(
-        "a" => ELA_L1_STATE,
-        "b" => ELB_L1_STATE,
-    ), Dict(), (datasets; probe = "a") -> datasets[probe]
+        (probe = "a",) => ELA_L1_STATE,
+        (probe = "b",) => ELB_L1_STATE,
+    ), Dict(), (probe = "a",)
 )
