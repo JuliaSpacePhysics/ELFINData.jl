@@ -1,7 +1,15 @@
-abstract type LogicalVariable end
+"""
+    ELFINLogicalDataset
 
-struct ELFINLogicalDataset{N, MD, P} <: AbstractDataSet
-    name::N
+Calling it with a time range downloads the files and opens them; indexing names one of its variables.
+
+```julia
+ELA_L1_FGS("2020-10-01", "2020-10-02")   # a CDFDataset
+ELA_L1_FGS[:ela_fgs]                     # an ELFINLogicalVariable
+```
+"""
+struct ELFINLogicalDataset{MD,P} <: AbstractDataSet
+    name::Symbol
     probe::Probe
     level::Level
     datatype::String
@@ -9,57 +17,68 @@ struct ELFINLogicalDataset{N, MD, P} <: AbstractDataSet
     metadata::MD
 end
 
-function ELFINLogicalDataset(f::Function, name, probe::Probe, level::Level, datatype, metadata; kw...)
-    url_pattern = f(probe, datatype; level, kw...)
+function ELFINLogicalDataset(pattern, name, probe::Probe, level::Level, datatype, metadata; kw...)
+    url_pattern = pattern(;
+        probe=lowercase(string(probe)), level=lowercase(string(level)), datatype, kw...
+    )
     return ELFINLogicalDataset(name, probe, level, datatype, url_pattern, metadata)
 end
 
-struct ELFINLogicalVariable{V} <: LogicalVariable
-    dataset::ELFINLogicalDataset
+struct ELFINLogicalVariable{D<:ELFINLogicalDataset,V}
+    dataset::D
     variable::V
 end
 
+Base.getindex(ds::ELFINLogicalDataset, variable::Union{Symbol,AbstractString}) =
+    ELFINLogicalVariable(ds, variable)
 
-@inline function Base.getproperty(ds::ELFINLogicalDataset, name::Symbol)
-    if name in fieldnames(ELFINLogicalDataset)
-        return getfield(ds, name)
-    else
-        ELFINLogicalVariable(ds, name)
-    end
-end
+(ds::ELFINLogicalDataset)(t0, t1; version="*", refresh=false, kw...) =
+    CDFDataset(localize(remotefiles(ds.url_pattern, t0, t1; version, refresh); kw...))
 
-(ds::ELFINLogicalDataset)(t0, t1; kw...) = begin
-    files = download_pattern(ds.url_pattern, t0, t1; kw...)
-    CDFDataset(files)
-end
-
-(ds::ELFINLogicalDataset)(trange::Union{Tuple, Vector, Pair}; kw...) = ds(trange...; kw...)
+(ds::ELFINLogicalDataset)(trange::Union{Tuple,Vector,Pair}; kw...) = ds(trange...; kw...)
 
 function (var::ELFINLogicalVariable)(args...; kw...)
     ds = var.dataset(args...; kw...)
     return ds[var.variable]
 end
 
-struct ELFINInstrument{D, MD, K} <: AbstractInstrument
+struct ELFINInstrument{D,MD,K} <: AbstractInstrument
     name::String
     datasets::D
     metadata::MD
     defaults::K
 end
 
-@noinline function _unknown_dataset_selectors(defaults, kw)
-    unknown = setdiff(keys(kw), keys(defaults))
-    label = length(unknown) == 1 ? "selector" : "selectors"
-    throw(ArgumentError("unknown dataset $label: $(join(unknown, ", "))"))
-end
+(inst::ELFINInstrument)(; kw...) = select(inst; kw...)
+(inst::ELFINInstrument)(args...; update=false, kw...) = inst(; kw...)(args...; update)
 
-(inst::ELFINInstrument)(; kw...) = select(inst.datasets, inst.defaults; kw...)
-
-function select(datasets::AbstractDict, defaults; kw...)
+function select(inst::ELFINInstrument; kw...)
+    defaults = inst.defaults
     for key in keys(kw)
-        key in keys(defaults) || _unknown_dataset_selectors(defaults, kw)
+        key in keys(defaults) || _unknown_dataset_selectors(inst, kw)
     end
-    return datasets[merge(defaults, (; kw...))]
+    key = merge(defaults, (; kw...))
+    haskey(inst.datasets, key) || _no_such_dataset(inst, key)
+    return inst.datasets[key]
 end
 
-(inst::ELFINInstrument)(args...; update = false, kw...) = inst(; kw...)(args...; update)
+@noinline function _unknown_dataset_selectors(inst, kw)
+    unknown = setdiff(keys(kw), keys(inst.defaults))
+    label = length(unknown) == 1 ? "selector" : "selectors"
+    known = join(keys(inst.defaults), ", ")
+    throw(ArgumentError("$(inst.name): unknown dataset $label: $(join(unknown, ", ")). Known: $known"))
+end
+
+@noinline function _no_such_dataset(inst, key)
+    _selectors(nt) = join(("$k=$(repr(v))" for (k, v) in pairs(nt)), " ")
+
+    opts = join(sort!(["  $(_selectors(k)): $(inst.datasets[k].name)" for k in keys(inst.datasets)]), "\n")
+    throw(
+        ArgumentError(
+            """
+            $(inst.name): no dataset for $(_selectors(key)).
+            Available:
+            $opts"""
+        )
+    )
+end

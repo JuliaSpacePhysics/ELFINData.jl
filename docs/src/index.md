@@ -20,12 +20,6 @@ using Pkg
 Pkg.add("ELFINData")
 ```
 
-An [agent skill](https://agentskills.io) is included for using ELFINData with natural language. To install it using [`skills`](https://github.com/vercel-labs/skills), run:
-
-```sh
-npx skills add JuliaSpacePhysics/ELFINData.jl
-```
-
 ## Quick Start
 
 The examples in this section walk through the typical workflow: discover an instrument's datasets, load data for the specified time range, and request processed data products.
@@ -40,20 +34,20 @@ EPD.datasets
 From the Julia REPL you can also type `?EPD` to view the [EPD](@ref) documentation.
 
 ```@example quick_start
-# Load the instrument's datasets (using the logical source name is the most portable approach)
+# Load the instrument's datasets
 ELA_L1_FGS("2020-10-01", "2020-10-02")
-# Alternatively, specify probe and datatype explicitly. This resolves the same logical dataset.
-# If no time range is given, the call returns the set of datasets (i.e. `FGM(; probe = "a", datatype = "survey") == ELA_L1_FGS`)
-FGM("2020-10-01", "2020-10-02"; probe = "a", datatype = "survey")
+# Alternatively, specify probe and datatype explicitly. This resolves the same dataset.
+# If no time range is given, the call returns the set of datasets
+@assert FGM(; probe = "a", datatype = "survey") === ELA_L1_FGS
 ```
 
-The following function derives directionally resolved flux spectra (omni, para, anti) and/or pitch-angle spectra from EPD level 2 data with a single call.
+The following function derives directionally resolved flux spectra (omni, para, anti) and/or pitch-angle spectra from EPD level 2 data.
 
 ```@example quick_start
 epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
 ```
 
-Commonly used variables have concise convenience wrappers. Because these variables are uniquely named, no additional metadata (such as `probe`, `datatype`, `level`, or `dataset`) is required to access them.
+Commonly used variables have concise convenience wrappers. As these variables are uniquely named, they can be accessed directly.
 
 ```@example quick_start
 ELA_POS_GEI("2020-10-01", "2020-10-02")
