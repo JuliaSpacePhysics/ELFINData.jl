@@ -16,8 +16,7 @@ using CDFDatasets
 using CDFDatasets: CDFDataset
 import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
-using SpaceDataModel: AbstractInstrument, AbstractDataSet
-using SpaceDataModel: FilePattern, localize, remotefiles
+using SpaceDataModel: Instrument, FilePattern, localize, remotefiles
 using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
 using Dates
 
@@ -38,6 +37,12 @@ const OVERPLOTS_URL = FilePattern("$BASE_URL/{probe}/overplots/{t:yyyy}/{t:mm}/{
 @enum Probe begin
     ELA
     ELB
+end
+
+function Probe(x::AbstractString)
+    x in ("a", "A", "ela", "ELA") && return ELA
+    x in ("b", "B", "elb", "ELB") && return ELB
+    throw(ArgumentError("Invalid probe: $x. Must be 'a' or 'b'"))
 end
 
 @enum Level begin

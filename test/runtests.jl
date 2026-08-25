@@ -16,11 +16,11 @@ const trange = ("2020-10-01", "2020-10-02")
     @test FGM(; probe = "b") === ELB_L1_FGS
     @test EPD() === ELA_L1_EPDEF
     @test EPD(; probe = "b", level = "l2") === ELB_L2_EPDEF
-    @test_throws ArgumentError STATE(; datatype = "defn")
+    @test STATE(; datatype = "defn") === ELA_L1_STATE
+    @test_throws ArgumentError STATE(; datatype = "attitude")
+    @test EPD(; probe = :b, level = "L2", datatype = "epdef") === ELB_L2_EPDEF
     # A combination the instrument does not publish names the ones it does.
     @test_throws ArgumentError EPD(; probe = "a", level = "l2", datatype = "epdif")
-    STATE(("2021-08-08", "2021-08-09"))
-    FGM(("2020-10-01", "2020-10-02"); probe = "a", datatype = "survey")
 end
 
 @testset "Datasets" begin
@@ -52,7 +52,7 @@ end
     overplots = ELFINData.OVERPLOTS_URL(; probe = "ela", level = "l2", datatype = "24hr")
     @test overplots(Date(2022, 9, 10)) == "https://data.elfin.ucla.edu/ela/overplots/2022/09/10/ela_l2_overview_20220910_24hr.gif"
     # fgm splits survey/fast across the directory (survey) and the file name (fgs)
-    @test ELA_L1_FGS.url_pattern(Date(2020, 10, 1); version = "01") ==
+    @test ELA_L1_FGS.url(Date(2020, 10, 1); version = "01") ==
         "https://data.elfin.ucla.edu/ela/l1/fgm/survey/2020/ela_l1_fgs_20201001_v01.cdf"
 end
 

@@ -31,9 +31,4 @@ Fluxgate Magnetometer (FGM)
 
 Datasets: [`ELA_L1_FGS`](@ref), [`ELB_L1_FGS`](@ref)
 """
-const FGM = ELFINInstrument(
-    "fgm", Dict(
-        (probe="a", datatype="survey") => ELA_L1_FGS,
-        (probe="b", datatype="survey") => ELB_L1_FGS,
-    ), Dict(), (probe="a", datatype="survey")
-)
+const FGM = Instrument("fgm", [ELA_L1_FGS, ELB_L1_FGS]; defaults = (probe = ELA, datatype = "survey"))

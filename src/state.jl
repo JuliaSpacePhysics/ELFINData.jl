@@ -26,9 +26,4 @@ State data (STATE)
 
 Datasets: [`ELA_L1_STATE`](@ref), [`ELB_L1_STATE`](@ref)
 """
-const STATE = ELFINInstrument(
-    "state", Dict(
-        (probe = "a",) => ELA_L1_STATE,
-        (probe = "b",) => ELB_L1_STATE,
-    ), Dict(), (probe = "a",)
-)
+const STATE = Instrument("state", [ELA_L1_STATE, ELB_L1_STATE]; defaults = (probe = ELA,))

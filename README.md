@@ -13,12 +13,12 @@ References: [Website](https://elfin.igpp.ucla.edu/), [NASA Science](https://scie
 using Pkg; Pkg.add("ELFINData")
 using ELFINData
 
-trange = ("2020-10-01", "2020-10-02")
-
 # High-level instrument access
-EPD(trange; probe="a")                        # Energetic Particle Detector
-FGM(trange; probe="a", datatype="survey")     # Fluxgate Magnetometer
-STATE(trange; probe="a")                      # Spacecraft state/position
+EPD(probe="a")                        # Energetic Particle Detector
+FGM(probe="a", datatype="survey")     # Fluxgate Magnetometer
+STATE(probe="a")                      # Spacecraft state/position
+
+trange = ("2020-10-01", "2020-10-02")
 
 # Spectral analysis, returns DimStack with omni/para/anti/perp/prec variables
 spectra = epd_spectral(trange)
