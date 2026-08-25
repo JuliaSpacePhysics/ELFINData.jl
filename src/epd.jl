@@ -16,7 +16,7 @@ const _EPD_DATASET_SPECS = (
         description = "[UNCALIBRATED RAW DATA ONLY] Energetic Particle Detector Energy Particles, Ions>keV"),
 )
 
-const _EPD_DATASETS = Dict(
+const _EPD_DATASETS = [
     let
         prefix = string(probe)
         name = Symbol(prefix, "_", spec.level, "_", uppercase(spec.datatype))
@@ -28,10 +28,10 @@ const _EPD_DATASETS = Dict(
         head = spec.datatype == "epdef" ? "electron" : "ion"
         dataset = ELFINLogicalDataset(EPD_URL, name, probe, spec.level, spec.datatype, metadata; head)
         @eval @doc $doc const $name = $dataset
-        (probe = lowercase(prefix[end:end]), level = lowercase(string(spec.level)), datatype = spec.datatype) => dataset
+        dataset
     end
     for spec in _EPD_DATASET_SPECS for probe in (ELA, ELB)
-)
+]
 
 for spec in _EPD_VARIABLE_SPECS, probe in (ELA, ELB)
     prefix = string(probe)
@@ -65,13 +65,7 @@ Datasets:
 - ELFIN A: [`ELA_L1_EPDEF`](@ref), [`ELA_L1_EPDIF`](@ref), [`ELA_L2_EPDEF`](@ref)
 - ELFIN B: [`ELB_L1_EPDEF`](@ref), [`ELB_L1_EPDIF`](@ref), [`ELB_L2_EPDEF`](@ref)
 """
-const EPD = ELFINInstrument(
-    "epd", _EPD_DATASETS, Dict(
-        "energies_mean" => EPD_ENERGY_BINS,
-        "energies_min" => EPD_ENERGY_BINS_MIN,
-        "energies_max" => EPD_ENERGY_BINS_MAX,
-    ), (probe = "a", level = "l1", datatype = "epdef")
-)
+const EPD = Instrument("epd", _EPD_DATASETS; defaults = (probe = ELA, level = L1, datatype = "epdef"))
 
 """
     epd_spectral(trange; probe = "a", type = "nflux", datatype = "epdef", fullspin = false)
@@ -89,7 +83,7 @@ function epd_spectral(args...; probe = "a", type = "nflux", datatype = "epdef", 
     _data_type = datatype == "epdef" ? "pef" : "pif"
     base_var = "el$(probe)_$(_data_type)_$(res)"
     spec_tvar = "$(base_var)_Epat_$(type)"
-    datasets = EPD(args...; probe, datatype, level = "l2")
+    datasets = EPD(; probe, datatype, level = "l2")(args...)
     spec_data = datasets[spec_tvar]
 
     pitch_angles = convert(Array, CDF.dim(spec_data, 1))
