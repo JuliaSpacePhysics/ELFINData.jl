@@ -16,7 +16,8 @@ using CDFDatasets
 using CDFDatasets: CDFDataset
 import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
-using SpaceDataModel: Instrument, FilePattern, localize, remotefiles
+using SpaceDataModel: Registry, Dataset, Archive, FilePattern, Product, getdata
+using IntervalSets: Interval
 using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
 using Dates
 
@@ -25,32 +26,19 @@ export ELA_L1_EPDEF, ELB_L1_EPDEF, ELA_L2_EPDEF, ELB_L2_EPDEF, ELA_L1_EPDIF, ELB
     ELA_PEF_HS_EPAT_NFLUX, ELB_PEF_HS_EPAT_NFLUX, ELA_PEF_FS_EPAT_NFLUX, ELB_PEF_FS_EPAT_NFLUX,
     ELA_PEF_HS_EPAT_EFLUX, ELB_PEF_HS_EPAT_EFLUX, ELA_PEF_FS_EPAT_EFLUX, ELB_PEF_FS_EPAT_EFLUX
 export ELA_L1_FGS, ELB_L1_FGS, ELA_FGS, ELB_FGS
+export ELA_L1_FGF, ELB_L1_FGF
 export ELA_L1_STATE, ELB_L1_STATE, ELA_POS_GEI, ELB_POS_GEI
 export ELA_L1_MRMA, ELB_L1_MRMA, ELA_L1_MRMI, ELB_L1_MRMI
 export ELA_MRMA, ELB_MRMA, ELA_MRMI, ELB_MRMI
 export EPD, FGM, STATE
 export epd_spectral
+export getdata
 
 const BASE_URL = "https://data.elfin.ucla.edu"
 const OVERPLOTS_URL = FilePattern("$BASE_URL/{probe}/overplots/{t:yyyy}/{t:mm}/{t:dd}/{probe}_{level}_overview_{t:yyyymmdd}_{datatype}.gif")
 
-@enum Probe begin
-    ELA
-    ELB
-end
+_open(files, t0, t1) = view(cdfopen(files), Interval{:closed,:open}(t0, t1))
 
-function Probe(x::AbstractString)
-    x in ("a", "A", "ela", "ELA") && return ELA
-    x in ("b", "B", "elb", "ELB") && return ELB
-    throw(ArgumentError("Invalid probe: $x. Must be 'a' or 'b'"))
-end
-
-@enum Level begin
-    L1
-    L2
-end
-
-include("types.jl")
 include("epd.jl")
 include("fgm.jl")
 include("mrmx.jl")

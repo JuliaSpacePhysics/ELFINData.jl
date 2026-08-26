@@ -10,10 +10,10 @@ using ELFINData
 using Chairmarks
 
 trange = ("2021-08-08", "2021-08-10")
-ela_pos_gei = ELA_POS_GEI(trange)
+ela_pos_gei = getdata(ELA_POS_GEI, trange)
 py_ela_pos_gei = Array(PySPEDAS.elfin.state(trange).ela_pos_gei)
 @assert ela_pos_gei == py_ela_pos_gei'
-@b Array(ELA_POS_GEI(trange)), PySPEDAS.elfin.state(trange), pyspedas.projects.elfin.state(trange)
+@b Array(getdata(ELA_POS_GEI, trange)), PySPEDAS.elfin.state(trange), pyspedas.projects.elfin.state(trange)
 ```
 
 Processing EPD L2 spectra: Julia is about 100 times faster than Python for spectral derivations across the same interval.

@@ -35,35 +35,34 @@ From the Julia REPL you can also type `?EPD` to view the [EPD](@ref) documentati
 
 ```@example quick_start
 # Load the instrument's datasets
-ELA_L1_FGS("2020-10-01", "2020-10-02")
-# Alternatively, specify probe and datatype explicitly. This resolves the same dataset.
-# If no time range is given, the call returns the set of datasets
-@assert FGM(; probe = "a", datatype = "survey") === ELA_L1_FGS
+getdata(ELA_L1_FGS, "2020-10-01", "2020-10-02")
+# Alternatively, specify probe and datatype explicitly. This selects the same dataset.
+@assert FGM[probe = "ela", datatype = "survey"].name == ELA_L1_FGS.name
 ```
 
 The following function derives directionally resolved flux spectra (omni, para, anti) and/or pitch-angle spectra from EPD level 2 data.
 
 ```@example quick_start
-epd_spectral("2020-10-01", "2020-10-02"; probe = "a")
+epd_spectral("2020-10-01", "2020-10-02"; probe = "ela")
 ```
 
-Commonly used variables have concise convenience wrappers. As these variables are uniquely named, they can be accessed directly.
+Commonly used variables have concise convenience handles — datasets with the variable pinned, materialized by `getdata`.
 
 ```@example quick_start
-ELA_POS_GEI("2020-10-01", "2020-10-02")
+getdata(ELA_POS_GEI, "2020-10-01", "2020-10-02")
 # Alternative ways to access the same variable: 
-# `STATE("2020-10-01", "2020-10-02"; probe = "a")["ela_pos_gei"]` or
-# `ELA_L1_STATE("2020-10-01", "2020-10-02")["ela_pos_gei"]`
+# `getdata(STATE[probe = "ela"], "2020-10-01", "2020-10-02")["ela_pos_gei"]` or
+# `getdata(ELA_L1_STATE, "2020-10-01", "2020-10-02")["ela_pos_gei"]`
 
-ELB_FGS("2020-10-01", "2020-10-02")
+getdata(ELB_FGS, "2020-10-01", "2020-10-02")
 # Alternative ways to access the same variable: 
-# `ELB_L1_FGS("2020-10-01", "2020-10-02")["elb_fgs"]` or 
-# `FGM("2020-10-01", "2020-10-02"; probe = "b", datatype = "survey")["elb_fgs"]`
+# `getdata(ELB_L1_FGS, "2020-10-01", "2020-10-02")["elb_fgs"]` or 
+# `getdata(FGM[probe = "elb", datatype = "survey"], "2020-10-01", "2020-10-02")["elb_fgs"]`
 
-ELA_PEF_HS_EPAT_NFLUX("2020-10-01", "2020-10-02")
+getdata(ELA_PEF_HS_EPAT_NFLUX, "2020-10-01", "2020-10-02")
 # Alternative ways to access the same variable: 
-# `ELA_L2_EPDEF("2020-10-01", "2020-10-02")["ela_pef_hs_Epat_nflux"]` or 
-# `EPD("2020-10-01", "2020-10-02"; probe = "a", level = "l2", datatype = "epdef")["ela_pef_hs_Epat_nflux"]`
+# `getdata(ELA_L2_EPDEF, "2020-10-01", "2020-10-02")["ela_pef_hs_Epat_nflux"]` or 
+# `getdata(EPD[probe = "ela", level = "l2", datatype = "epdef"], "2020-10-01", "2020-10-02")["ela_pef_hs_Epat_nflux"]`
 ```
 
 ## Quick Plots
@@ -73,6 +72,7 @@ using ELFINData
 using Dates
 using ELFINData.DimensionalData
 using SpacePhysicsMakie, WGLMakie
+using TimeseriesUtilities: degap
 using Bonito # hide
 Page() # hide
 
@@ -81,7 +81,7 @@ t0 = DateTime("2022-09-05T10:00:00")
 t1 = DateTime("2022-09-05T10:30:00")
 
 # Example: plot EPD flux spectra
-spectra = epd_spectral(t0, t1; probe = "a")[Ti(t0 .. t1)]
+spectra = epd_spectral(t0, t1; probe = "ela")[Ti(t0 .. t1)]
 tplot(degap.([spectra.omni, spectra.anti, spectra.perp, spectra.para]); colormap=:turbo)
 ```
 
@@ -99,14 +99,14 @@ STATE
 
 ```@autodocs
 Modules = [ELFINData]
-Filter = t -> t isa ELFINData.ELFINLogicalDataset
+Filter = t -> t isa ELFINData.Dataset
 ```
 
 ### Variables
 
 ```@autodocs
 Modules = [ELFINData]
-Filter = t -> t isa ELFINData.ELFINLogicalVariable
+Filter = t -> t isa ELFINData.Product
 ```
 
 ### Functions and Types

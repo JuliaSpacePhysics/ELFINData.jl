@@ -14,9 +14,9 @@ using Pkg; Pkg.add("ELFINData")
 using ELFINData
 
 # High-level instrument access
-EPD(probe="a")                        # Energetic Particle Detector
-FGM(probe="a", datatype="survey")     # Fluxgate Magnetometer
-STATE(probe="a")                      # Spacecraft state/position
+EPD[probe = "ela"]                                   # Energetic Particle Detector
+FGM[probe = "ela", datatype = "survey"]               # Fluxgate Magnetometer
+STATE[probe = "ela"]                                  # Spacecraft state/position
 
 trange = ("2020-10-01", "2020-10-02")
 
@@ -26,7 +26,7 @@ spectra.para          # precipitating spectrum (Energy × Time)
 spectra.omni[:, 1]    # all energies at first time step
 
 # Precipitating-to-trapped flux ratio
-ratio = flux_ratio(trange; probe="a")
+ratio = flux_ratio(spectra)
 
 # Raw L1 dataset
 ds = ELA_L1_EPDEF(trange)
@@ -44,7 +44,7 @@ spectra[Ti(DateTime("2020-10-01T06:00") .. DateTime("2020-10-01T07:00"))]
 ## Key conventions
 
 - **Time is the last dimension**
-- **Probe** is always a string: `"a"` or `"b"`
+- **Probe** is `"ela"` or `"elb"`
 - EPD has 16 log-spaced energy channels: ~63–6500 keV
 
 ### Dataset constants
