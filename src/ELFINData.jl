@@ -16,7 +16,7 @@ using CDFDatasets
 using CDFDatasets: CDFDataset
 import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
-using SpaceDataModel: Registry, Dataset, Archive, FilePattern, Product, getdata
+using SpaceDataModel: Registry, Dataset, Archive, FilePattern, Product, getdata, localize
 using IntervalSets: Interval
 using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
 using Dates
@@ -32,6 +32,7 @@ export ELA_L1_MRMA, ELB_L1_MRMA, ELA_L1_MRMI, ELB_L1_MRMI
 export ELA_MRMA, ELB_MRMA, ELA_MRMI, ELB_MRMI
 export EPD, FGM, STATE
 export epd_spectral
+export science_zones
 export getdata
 
 const BASE_URL = "https://data.elfin.ucla.edu"
@@ -43,6 +44,7 @@ include("epd.jl")
 include("fgm.jl")
 include("mrmx.jl")
 include("state.jl")
+include("science_zone.jl")
 
 """Precipitating-to-trapped flux ratio"""
 function flux_ratio(prec, trap)

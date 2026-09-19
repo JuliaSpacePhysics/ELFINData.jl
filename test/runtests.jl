@@ -43,6 +43,13 @@ end
     ELA_MRMI(trange)
 end
 
+@testset "Science zones" begin
+    using Dates
+    zones = science_zones("elb")
+    @test length(zones.tstart) == length(zones.tend)
+    @test zones.tstart[1] == DateTime(2019, 9, 1, 3, 25, 7)
+end
+
 @testset "Missing remote files" begin
     @test size(getdata(ELA_FGS, ("2020-10-08", "2020-10-10")), 1) == 3
 end
