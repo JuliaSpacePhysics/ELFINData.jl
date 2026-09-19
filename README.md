@@ -28,6 +28,10 @@ spectra.omni[:, 1]    # all energies at first time step
 # Precipitating-to-trapped flux ratio
 ratio = flux_ratio(spectra)
 
+# EPD science zone start/end times
+zones = science_zones("ela")
+zones.tstart
+
 # Raw L1 dataset
 ds = ELA_L1_EPDEF(trange)
 flux = ds["ela_pef"]  # raw electron flux
