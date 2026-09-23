@@ -33,6 +33,7 @@ export ELA_MRMA, ELB_MRMA, ELA_MRMI, ELB_MRMI
 export EPD, FGM, STATE
 export epd_spectral
 export science_zones
+export EPD_DATA_NOTES, epd_data_notes
 export getdata
 
 const BASE_URL = "https://data.elfin.ucla.edu"
@@ -48,6 +49,7 @@ include("fgm.jl")
 include("mrmx.jl")
 include("state.jl")
 include("science_zone.jl")
+include("data_notes.jl")
 
 """Precipitating-to-trapped flux ratio"""
 function flux_ratio(prec, trap)
