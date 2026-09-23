@@ -72,7 +72,6 @@ using ELFINData
 using Dates
 using ELFINData.DimensionalData
 using SpacePhysicsMakie, WGLMakie
-using TimeseriesUtilities: degap
 using Bonito # hide
 Page() # hide
 
@@ -82,7 +81,7 @@ t1 = DateTime("2022-09-05T10:30:00")
 
 # Example: plot EPD flux spectra
 spectra = epd_spectral(t0, t1; probe = "ela")[Ti(t0 .. t1)]
-tplot(degap.([spectra.omni, spectra.anti, spectra.perp, spectra.para]); colormap=:turbo)
+tplot([spectra.omni, spectra.anti, spectra.perp, spectra.para]; colormap=:turbo)
 ```
 
 ## API

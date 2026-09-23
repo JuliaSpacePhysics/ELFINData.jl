@@ -36,7 +36,8 @@ end
 end
 
 @testset "Variables" begin
-    ELA_FGS(trange)
+    # L1 FGM values exceed the files' placeholder VALIDMIN/VALIDMAX
+    @test !any(isnan, ELA_FGS(trange))
     ELA_PEF(trange)
     ELA_POS_GEI(trange)
     ELA_MRMA(trange)

@@ -38,7 +38,10 @@ export getdata
 const BASE_URL = "https://data.elfin.ucla.edu"
 const OVERPLOTS_URL = FilePattern("$BASE_URL/{probe}/overplots/{t:yyyy}/{t:mm}/{t:dd}/{probe}_{level}_overview_{t:yyyymmdd}_{datatype}.gif")
 
-_open(files, t0, t1) = view(cdfopen(files), Interval{:closed,:open}(t0, t1))
+# ELFIN files carry placeholder VALIDMIN/VALIDMAX (e.g. 0..1e6 on EPD fluxes, ±1e6 on L1 FGM, which
+# reaches ±5e6), so only FILLVAL marks invalid values.
+const _CHECKS = (; validmin = nothing, validmax = nothing)
+_open(files, t0, t1) = view(cdfopen(files; checks = _CHECKS), Interval{:closed,:open}(t0, t1))
 
 include("epd.jl")
 include("fgm.jl")

@@ -15,7 +15,7 @@ SpaceDataModel = "0b37b92c-f0c5-4a52-bd5c-390dec20857c"
 VelocityDistributionFunctions = "63a0b508-f74a-48f7-b6e7-0e65849b0078"
 
 [compat]
-CDFDatasets = "0.2"
+CDFDatasets = "0.3.3"
 Dates = "1"
 DimensionalData = "0.29, 0.30"
 IntervalSets = "0.7"
