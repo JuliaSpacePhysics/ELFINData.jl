@@ -51,6 +51,15 @@ end
     @test zones.tstart[1] == DateTime(2019, 9, 1, 3, 25, 7)
 end
 
+@testset "Data notes" begin
+    using Dates
+    @test isempty(epd_data_notes("ela", DateTime(2021, 3, 1), DateTime(2021, 3, 2)))
+    # the page fault spans only ELFIN-B; an interval overlapping its end is flagged
+    @test length(epd_data_notes("elb", DateTime(2021, 11, 25, 3), DateTime(2021, 11, 25, 5))) == 1
+    @test isempty(epd_data_notes("ela", DateTime(2021, 11, 20), DateTime(2021, 11, 21)))
+    @test only(epd_data_notes("ela", "2022-06-01", "2022-06-02"; head = "i")).tend == DateTime(2022, 6, 29)
+end
+
 @testset "Missing remote files" begin
     @test size(getdata(ELA_FGS, ("2020-10-08", "2020-10-10")), 1) == 3
 end

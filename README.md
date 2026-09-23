@@ -32,6 +32,9 @@ ratio = flux_ratio(spectra)
 zones = science_zones("ela")
 zones.tstart
 
+# Documented EPD data-quality issues overlapping an interval (empty when clean)
+epd_data_notes("ela", "2022-04-01", "2022-04-02")
+
 # Raw L1 dataset
 ds = ELA_L1_EPDEF(trange)
 flux = ds["ela_pef"]  # raw electron flux
