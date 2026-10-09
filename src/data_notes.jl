@@ -1,7 +1,4 @@
-"""
-EPD data-quality intervals listed at <https://elfin.igpp.ucla.edu/data-notes>
-The ELFIN-A sector configuration needs a modified phase delay that the L2 pitch angles do not include.
-"""
+# The L2 pitch angles lack the modified phase delay that the off-nominal ELFIN-A sector configuration needs.
 const EPD_DATA_NOTES = [
     (probe = "ela", head = "e", tstart = DateTime(2020, 9, 26, 9, 22), tend = DateTime(2020, 9, 28, 8, 12),
         issue = "experimental threshold configuration: fluxes inaccurate, nothing below ~100 keV"),
@@ -33,12 +30,6 @@ const EPD_DATA_NOTES = [
         issue = "ion thresholds not yet working on orbit: uncalibrated"),
 ]
 
-"""
-    epd_data_notes(probe, t0, t1; head = "e")
-
-Data-quality notes for `probe` and EPD `head` (`"e"` electron, `"i"` ion) that overlap `[t0, t1)`;
-empty when the interval is clean.
-"""
 function epd_data_notes(probe, t0, t1; head = "e")
     t0, t1 = DateTime(t0), DateTime(t1)
     return filter(n -> n.probe == string(probe) && n.head == head && n.tstart < t1 && t0 < n.tend, EPD_DATA_NOTES)

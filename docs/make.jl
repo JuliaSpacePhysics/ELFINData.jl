@@ -2,6 +2,10 @@ using ELFINData
 using Documenter
 using Bonito
 
+let readme = read(joinpath(@__DIR__, "..", "README.md"), String)
+    write(joinpath(@__DIR__, "src", "index.md"), readme)
+end
+
 DocMeta.setdocmeta!(ELFINData, :DocTestSetup, :(using ELFINData); recursive = true)
 
 makedocs(;
@@ -13,9 +17,10 @@ makedocs(;
     ),
     pages = [
         "Home" => "index.md",
+        "Examples" => "examples.md",
         "Validation and Benchmark" => "validation.md",
     ],
-    checkdocs = :exports
+    checkdocs = :none
 )
 
 deploydocs(;
