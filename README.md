@@ -1,7 +1,6 @@
 # ELFINData
 
 [![DOI](https://zenodo.org/badge/1071121579.svg)](https://doi.org/10.5281/zenodo.17500124)
-[![Coverage](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaSpacePhysics/ELFINData.jl)
 
 Load and process data from the Electron Losses and Fields Investigation (ELFIN) mission.
 
