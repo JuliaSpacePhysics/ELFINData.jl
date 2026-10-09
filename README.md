@@ -13,35 +13,31 @@ References: [Website](https://elfin.igpp.ucla.edu/), [NASA Science](https://scie
 using Pkg; Pkg.add("ELFINData")
 using ELFINData
 
-# High-level instrument access
-EPD[probe = "ela"]                                   # Energetic Particle Detector
+# Instruments are registries of datasets, selected by keyword
+EPD[probe = "ela", level = "l2"]                      # Energetic Particle Detector
 FGM[probe = "ela", datatype = "survey"]               # Fluxgate Magnetometer
 STATE[probe = "ela"]                                  # Spacecraft state/position
 
 trange = ("2020-10-01", "2020-10-02")
 
-# Spectral analysis, returns DimStack with omni/para/anti/perp/prec variables
+# EPD L2 spectra: DimStack of omni/para/anti/perp/prec (Energy × Time)
 spectra = epd_spectral(trange)
-spectra.para          # precipitating spectrum (Energy × Time)
-spectra.omni[:, 1]    # all energies at first time step
+spectra.para
+spectra.omni[:, 1]
 
-# Precipitating-to-trapped flux ratio
-ratio = flux_ratio(spectra)
+# Precipitating-to-trapped flux ratio (prec ./ perp)
+ratio = ELFINData.flux_ratio(spectra)
 
-# EPD science zone start/end times
+# EPD science zone start/end times: (; tstart, tend)
 zones = science_zones("ela")
-zones.tstart
 
 # Documented EPD data-quality issues overlapping an interval (empty when clean)
 epd_data_notes("ela", "2022-04-01", "2022-04-02")
 
-# Raw L1 dataset
-ds = ELA_L1_EPDEF(trange)
-flux = ds["ela_pef"]  # raw electron flux
-
-# Direct variable access
-fgs = ELA_FGS(trange)       # B field DimArray
-pos = ELA_POS_GEI(trange)   # GEI position DimArray
+# Datasets and variables load with `getdata(x, t0, t1)` or by calling `x(t0, t1)`
+ds = ELA_L1_EPDEF(trange)   # CDFDataset
+ds["ela_pef"]               # raw counts per sector
+fgs = ELA_FGS(trange)       # CDFVariable (lazy, DimArray-like)
 
 # Time filtering (DimensionalData.jl)
 using DimensionalData, Dates
@@ -52,41 +48,50 @@ spectra[Ti(DateTime("2020-10-01T06:00") .. DateTime("2020-10-01T07:00"))]
 
 - **Time is the last dimension**
 - **Probe** is `"ela"` or `"elb"`
-- EPD has 16 log-spaced energy channels: ~63–6500 keV
+- EPD has an electron head (50 keV–5 MeV) and an ion head (50–5000 keV); 16 log-spaced energy channels, mean energies ~63–6500 keV
+- Only `FILLVAL` reads as `NaN`: ELFIN files carry placeholder `VALIDMIN`/`VALIDMAX` (e.g. 0..1e6 on EPD fluxes, which exceed it), so those bounds are not applied
+
+## API
+
+### Functions
+
+- `epd_spectral(t0, t1; probe = "ela", type = "nflux", datatype = "epdef", fullspin = false, PAspectra = nothing)`: `type` is `"nflux"` or `"eflux"`; `fullspin` selects full- over half-spin resolution; `Espectra` keywords pass to `VelocityDistributionFunctions.directional_energy_spectra`. With `PAspectra` a NamedTuple, it instead returns a NamedTuple of the energy spectra, pitch-angle spectra `ch0, ch1, …`, `energies`, `times` and `pitch_angles`; each is the energy-width-weighted mean over `energybins = [(1, 3), (4, 6)]` (channel indices) or `energies = [(50, 160), (160, 345)]` (keV), defaulting to channels 1–3, 4–6, 7–9, 10–16.
+- `science_zones(probe = "ela")`: EPD science zone times from the probe's `epd_science_zone_times.csv`.
+- `epd_data_notes(probe, t0, t1; head = "e")`: entries of `EPD_DATA_NOTES` (from <https://elfin.igpp.ucla.edu/data-notes>) for head `"e"` (electron) or `"i"` (ion) overlapping `[t0, t1)`.
+
+### Instruments
+
+| Registry | Selectors (default first)                                   |
+| -------- | ----------------------------------------------------------- |
+| `EPD`    | `probe`, `level` (`"l1"`, `"l2"`), `datatype` (`"epdef"`, `"epdif"`; ion is L1 only) |
+| `FGM`    | `probe`, `datatype` (`"survey"`, `"fast"`)                  |
+| `STATE`  | `probe`                                                     |
 
 ### Dataset constants
 
-Call with `trange`; returns a `CDFDataset` (dict-like):
-
 | Constant                        | Contents                                            |
 | ------------------------------- | --------------------------------------------------- |
-| `ELA_L1_EPDEF` / `ELB_L1_EPDEF` | L1 electron flux (raw)                              |
-| `ELA_L1_EPDIF` / `ELB_L1_EPDIF` | L1 ion flux                                         |
+| `ELA_L1_EPDEF` / `ELB_L1_EPDEF` | L1 electron counts                                  |
+| `ELA_L1_EPDIF` / `ELB_L1_EPDIF` | L1 ion counts                                       |
 | `ELA_L2_EPDEF` / `ELB_L2_EPDEF` | L2 electron flux (calibrated, pitch-angle resolved) |
-| `ELA_L1_FGS` / `ELB_L1_FGS`     | L1 magnetometer survey                              |
+| `ELA_L1_FGS` / `ELB_L1_FGS`     | L1 magnetometer, survey mode                        |
+| `ELA_L1_FGF` / `ELB_L1_FGF`     | L1 magnetometer, fast survey mode                   |
+| `ELA_L1_MRMA` / `ELB_L1_MRMA`   | L1 MRM data collected by the ACB                    |
+| `ELA_L1_MRMI` / `ELB_L1_MRMI`   | L1 MRM data collected by the IDPU                   |
 | `ELA_L1_STATE` / `ELB_L1_STATE` | L1 spacecraft state                                 |
 
 ### Variable constants
 
-Call with trange; return a `DimArray` directly:
+| Constant                      | Contents                               |
+| ----------------------------- | -------------------------------------- |
+| `ELA_PEF` / `ELB_PEF`         | Electron counts per sector (L1, raw)   |
+| `ELA_PIF` / `ELB_PIF`         | Ion counts per sector (L1, raw)        |
+| `ELA_FGS` / `ELB_FGS`         | B field, sensor XYZ, survey mode;      |
+| `ELA_POS_GEI` / `ELB_POS_GEI` | Spacecraft position (km, GEI)          |
+| `ELA_MRMA` / `ELB_MRMA`       | MRM B field (ADC units), sensor XYZ    |
+| `ELA_MRMI` / `ELB_MRMI`       | MRM B field (ADC units), sensor XYZ    |
 
-| Constant                      | Contents                  |
-| ----------------------------- | ------------------------- |
-| `ELA_PEF` / `ELB_PEF`         | Electron flux (L1)        |
-| `ELA_PIF` / `ELB_PIF`         | Ion flux (L1)             |
-| `ELA_FGS` / `ELB_FGS`         | 3-component B field (nT)  |
-| `ELA_POS_GEI` / `ELB_POS_GEI` | Spacecraft position (GEI) |
-| `ELA_MRMA` / `ELB_MRMA`       | MRM-A magnetometer        |
-| `ELA_MRMI` / `ELB_MRMI`       | MRM-I magnetometer        |
-
-### L2 spectral variables
-
-| Constant                           | Description                                  |
-| ---------------------------------- | -------------------------------------------- |
-| `ELA_PEF_HS_EPAT_NFLUX`            | Half-spin, number flux, pitch-angle × energy |
-| `ELA_PEF_FS_EPAT_NFLUX`            | Full-spin equivalent                         |
-| `ELA_PEF_HS_EPAT_EFLUX`            | Half-spin, energy flux                       |
-| (ELB variants follow same pattern) |    
+L2 energy–pitch-angle–time spectra: `EL{A,B}_PEF_{HS,FS}_EPAT_{NFLUX,EFLUX}` (half/full spin resolution, number/energy flux).
 
 ## Elsewhere
 

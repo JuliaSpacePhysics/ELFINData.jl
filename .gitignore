@@ -6,3 +6,4 @@ Manifest.toml
 /docs/build/
 .CondaPkg
 elfin_data
+/docs/src/index.md

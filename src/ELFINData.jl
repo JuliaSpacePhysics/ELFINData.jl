@@ -1,15 +1,3 @@
-"""
-# Instruments
-- [Fluxgate Magnetometer (FGM)](@ref FGM)
-- [Energetic Particle Detector (EPD)](@ref EPD)
-- Magneto Resistive Magnetometer-a (MRMa)
-- Magneto Resistive Magnetometer-i (MRMi)
-- [State data (state)](@ref STATE)
-- Engineering data (ENG)
-
-# Functions
-- [`epd_spectral`](@ref epd_spectral): Load ELFIN EPD L2 data and extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.
-"""
 module ELFINData
 using DimensionalData
 using CDFDatasets
@@ -51,7 +39,6 @@ include("state.jl")
 include("science_zone.jl")
 include("data_notes.jl")
 
-"""Precipitating-to-trapped flux ratio"""
 function flux_ratio(prec, trap)
     f = prec ./ trap
     metadata = copy(prec.metadata)

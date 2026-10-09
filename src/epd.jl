@@ -1,18 +1,18 @@
 const EPD_URL = FilePattern("$BASE_URL/{probe}/{level}/epd/fast/{head}/{t:yyyy}/{probe}_{level}_{datatype}_{t:yyyymmdd}_v{version}.cdf")
 
 const _EPD_VARIABLE_SPECS = (
-    (level="l1", datatype="epdef", variable="pef", title="EPD Electron Counts"),
-    (level="l1", datatype="epdif", variable="pif", title="EPD Ion Counts"),
-    (level="l2", datatype="epdef", variable="pef_hs_Epat_nflux", title="EnergyPitchAngleTime spectra nflux, half spin resolution"),
-    (level="l2", datatype="epdef", variable="pef_fs_Epat_nflux", title="EnergyPitchAngleTime spectra nflux, full spin resolution"),
-    (level="l2", datatype="epdef", variable="pef_hs_Epat_eflux", title="EnergyPitchAngleTime spectra eflux, half spin resolution"),
-    (level="l2", datatype="epdef", variable="pef_fs_Epat_eflux", title="EnergyPitchAngleTime spectra eflux, full spin resolution"),
+    (level="l1", datatype="epdef", variable="pef"),
+    (level="l1", datatype="epdif", variable="pif"),
+    (level="l2", datatype="epdef", variable="pef_hs_Epat_nflux"),
+    (level="l2", datatype="epdef", variable="pef_fs_Epat_nflux"),
+    (level="l2", datatype="epdef", variable="pef_hs_Epat_eflux"),
+    (level="l2", datatype="epdef", variable="pef_fs_Epat_eflux"),
 )
 
 const _EPD_DATASET_SPECS = (
-    (level="l1", datatype="epdef", title="EPD Electron Counts"),
-    (level="l2", datatype="epdef", title="EPD Electron Counts"),
-    (level="l1", datatype="epdif", title="EPD Ion Counts"),
+    (level="l1", datatype="epdef"),
+    (level="l2", datatype="epdef"),
+    (level="l1", datatype="epdif"),
 )
 
 # One Dataset per head: the electron head covers L1+L2 epdef, the ion head covers L1 epdif only.
@@ -23,32 +23,18 @@ const _EPD_DATASETS = [
         selectors=(; probe=("ela", "elb"), level="l1", datatype="epdif")),
 ]
 
-"""
-Energetic Particle Detector (EPD)
-
-> The EPD consists of two heads: an electron head that measures 50 keV to 5 MeV electrons and an ion head that measures 50 to 5000 keV ions.
-
-Datasets:
-- ELFIN A: [`ELA_L1_EPDEF`](@ref), [`ELA_L1_EPDIF`](@ref), [`ELA_L2_EPDEF`](@ref)
-- ELFIN B: [`ELB_L1_EPDEF`](@ref), [`ELB_L1_EPDIF`](@ref), [`ELB_L2_EPDEF`](@ref)
-"""
 const EPD = Registry("epd", _EPD_DATASETS; defaults=(probe="ela", level="l1", datatype="epdef"))
 
 for spec in _EPD_DATASET_SPECS, probe in ("ela", "elb")
     name = Symbol(uppercase(probe), "_", uppercase(spec.level), "_", uppercase(spec.datatype))
-    main = join(("[`$(uppercase(probe))_$(uppercase(var.variable))`](@ref)" for var in _EPD_VARIABLE_SPECS
-                                                                                if var.level == spec.level && var.datatype == spec.datatype), ", ")
-    main = isempty(main) ? "" : "\n\nMain data variables: $main"
-    doc = "ELFIN $(probe[end]) *$(spec.level)* $(spec.title)$main"
-    @eval @doc $doc const $name = EPD[probe=$probe, level=$(spec.level), datatype=$(spec.datatype)]
+    @eval const $name = EPD[probe=$probe, level=$(spec.level), datatype=$(spec.datatype)]
 end
 
 for spec in _EPD_VARIABLE_SPECS, probe in ("ela", "elb")
     name = Symbol(uppercase(probe), "_", uppercase(spec.variable))
     dataset = Symbol(uppercase(probe), "_", uppercase(spec.level), "_", uppercase(spec.datatype))
     varname = "el$(probe[end])_$(spec.variable)"
-    doc = "ELFIN $(probe[end]) $(spec.title)"
-    @eval @doc $doc const $name = $dataset[$varname]
+    @eval const $name = $dataset[$varname]
 end
 
 # Energy bins for EPD (16 channels, log-spaced from ~50 keV to ~5.8 MeV)
@@ -65,17 +51,6 @@ const EPD_metadata_patch = Dict(
     :prec => Dict("LABLAXIS" => "prec nflux")
 )
 
-"""
-    epd_spectral(trange; probe = "ela", type = "nflux", datatype = "epdef", fullspin = false)
-
-Load ELFIN EPD L2 data and process it to extract directionally resolved flux spectra (omni, para, anti) and/or pitch angle spectra.
-
-Returns a NamedTuple-like container with omni, para, anti, and prec flux spectra.
-
-```julia
-epd_spectral("2020-10-01", "2020-10-02")
-```
-"""
 function epd_spectral(args...; probe="ela", type="nflux", datatype="epdef", fullspin=false, Espectra=(;), PAspectra=nothing, kw...)
     res = fullspin ? :fs : :hs
     _data_type = datatype == "epdef" ? "pef" : "pif"
@@ -129,19 +104,7 @@ function epd_l2_Espectra(flux, pitch_angles, loss_cone; fullspin=false, kw...)
     return directional_energy_spectra(flux, pitch_angles, loss_cone; para_tol, perp_tol, half_sector_width, kw...)
 end
 
-"""
-    epd_l2_PAspectra(S; energybins=nothing, energies=nothing)
-
-Process EPD L2 CDF data to create pitch angle spectra following Python epd_l2_PAspectra logic.
-
-# Arguments
-- `S`: 3D spectral data (time × pitch_angle × energy)
-- `energybins`: List of tuples specifying energy channel ranges, e.g., [(0,2), (3,5), (6,8), (9,15)]
-- `energies`: List of tuples specifying energy ranges in keV, e.g., [(50,160), (160,345), (345,900), (900,7000)]
-
-# Returns
-- Named tuple containing pitch angle spectra for each energy channel
-"""
+# Port of PySPEDAS `epd_l2_PAspectra`
 function epd_l2_PAspectra(S; energybins=nothing, energies=nothing)
     # Energy bin boundaries (constant from Python code)
     EMINS = EPD_ENERGY_BINS_MIN
