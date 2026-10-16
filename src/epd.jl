@@ -54,7 +54,8 @@ const EPD_metadata_patch = Dict(
 function epd_spectral(args...; probe="ela", type="nflux", datatype="epdef", fullspin=false, Espectra=(;), PAspectra=nothing, kw...)
     res = fullspin ? :fs : :hs
     _data_type = datatype == "epdef" ? "pef" : "pif"
-    base_var = "el$(probe[end])_$(_data_type)_$(res)"
+    prefix = "el$(probe[end])_$(_data_type)"
+    base_var = "$(prefix)_$(res)"
     spec_tvar = "$(base_var)_Epat_$(type)"
     ds = EPD[probe=probe, datatype=datatype, level="l2"]
     cdf = getdata(ds, args...; kw...)
@@ -62,20 +63,27 @@ function epd_spectral(args...; probe="ela", type="nflux", datatype="epdef", full
 
     pitch_angles = convert(Array, CDF.dim(spec_data, 1))
     loss_cone = Array(cdf["$(base_var)_LCdeg"])
-    S = Array(spec_data)
     energies = convert(Array, CDF.dim(spec_data, 2))
     times = DateTime.(CDF.dim(spec_data, ndims(spec_data)))
+    c = epd_counts(Array(spec_data), Array(cdf["$(base_var)_Epat_dfovf"]), _nsum(cdf, prefix, times))
+    S = c.flux
     Espectras = epd_l2_Espectra(S, pitch_angles, loss_cone; fullspin, Espectra...)
     metadata = merge(spec_data.attrib, Dict("SCALETYP" => log10, :yscale => log10, :colorrange => (1.0e1, 1.0e7), :ylabel => "Energy (keV)"))
 
     return if isnothing(PAspectra)
         tdim = Ti(times)
         edim = Energy(vec(energies))
-        prec = abs.(Espectras.para .- Espectras.anti)
-        ds = DimStack((; Espectras..., prec), (edim, tdim); metadata)
-        return maplayers(ds) do da
-            rebuild(da, metadata=merge(metadata, get(EPD_metadata_patch, da.name, Dict())))
-        end
+        south = permutedims(loss_cone .> 90)
+        prec = ifelse.(south, Espectras.anti .- Espectras.para, Espectras.para .- Espectras.anti)
+        flux = (; Espectras..., prec)
+        flux = NamedTuple{keys(flux)}(map(keys(flux), values(flux)) do k, x
+            DimArray(x, (edim, tdim); metadata = merge(metadata, get(EPD_metadata_patch, k, Dict())))
+        end)
+        cnt = epd_directional_counts(c.counts, pitch_angles, loss_cone; fullspin, Espectra...)
+        nbad = epd_directional_counts(c.bad, pitch_angles, loss_cone; fullspin, Espectra...)
+        aux = map(x -> DimArray(x, (edim, tdim)), (; para_cnt = cnt.para, anti_cnt = cnt.anti, perp_cnt = cnt.perp,
+            para_bad = nbad.para, anti_bad = nbad.anti, perp_bad = nbad.perp))
+        DimStack((; flux..., aux..., lc = DimArray(loss_cone, tdim)); metadata)
     else
         sort_flux_by_pitch_angle!(S, pitch_angles)
         PAspectras = epd_l2_PAspectra(S; PAspectra..., kw...)
@@ -90,18 +98,73 @@ end
 using DimensionalData: YDim, @dim
 @dim Energy YDim "Energy"
 
-function epd_l2_Espectra(flux, pitch_angles, loss_cone; fullspin=false, kw...)
-    # Determine nspinsectors based on resolution
-    res = fullspin ? :fs : :hs
-    n_pa = size(pitch_angles, 1)
-    nspinsectors = res == :hs ? (n_pa - 2) * 2 : n_pa - 2
+# Dead time [s] of the SPEDAS `elf_cal_epd` correction `1 / (1 − R τ)` on the raw total rate `R`
+const EPD_DEAD_TIME = 1 / (1.02 * 1.25e5)
 
-    # Calculate tolerances
-    FOVo2 = 11.0  # Field of View divided by 2 (deg)
-    half_sector_width = 180 / nspinsectors
-    para_tol = FOVo2 + half_sector_width
-    perp_tol = -FOVo2
-    return directional_energy_spectra(flux, pitch_angles, loss_cone; para_tol, perp_tol, half_sector_width, kw...)
+# Counts a sector registers at most in one spin: its accumulation time (1/16 of a ~2.8 s spin) over the dead time
+const EPD_SECTOR_MAX = 2.8 / 16 / EPD_DEAD_TIME
+
+# L2 fill counts, listed since in multi-spin sums they stay below the cap
+const _DFOVF_FILL_COUNTS = (37789, 30676)
+
+_isfill(c) = any(f -> abs(c - f) < 0.5, _DFOVF_FILL_COUNTS)
+
+# `nsum`: spins summed (`nspinsinsum`) per time (last dimension), or a scalar
+function epd_counts(F, D, nsum = 1)
+    C, bad, G = similar(F, Float64), similar(F, Bool), copy(F)
+    for I in CartesianIndices(F)
+        f, d = F[I], D[I]
+        c = 1 / Float64(d)^2
+        flux = isfinite(f) && f > 0
+        C[I] = flux && c <= (nsum isa Number ? nsum : nsum[I[ndims(F)]]) * EPD_SECTOR_MAX && !_isfill(c) ? c : 0.0
+        bad[I] = flux && C[I] == 0
+        bad[I] && (G[I] = NaN)
+    end
+    return (; counts = C, flux = G, bad)
+end
+
+const _FOVo2 = 11.0  # Field of View divided by 2 (deg)
+
+# PySPEDAS `epd_l2_Espectra` tolerances [deg] for `n_pa` pitch-angle bins
+function epd_tolerances(n_pa; fullspin = false)
+    half_sector_width = 180 / (fullspin ? n_pa - 2 : (n_pa - 2) * 2)
+    return (; half_sector_width, para_tol = _FOVo2 + half_sector_width, perp_tol = -_FOVo2)
+end
+
+epd_direction(pa, lc; half_sector_width, para_tol = _FOVo2 + half_sector_width, perp_tol = -_FOVo2) =
+    isnan(pa) ? nothing : is_parallel(pa, lc, para_tol) ? :para : is_anti_parallel(pa, lc, para_tol) ? :anti :
+    is_perpendicular(pa, lc, perp_tol) ? :perp : nothing
+
+# Sector sums per direction (SPEDAS `elf_getspec, type = 'raw'`), unlike the solid-angle-weighted mean of the fluxes
+function epd_directional_counts(C, pitch_angles, loss_cone; fullspin = false, kw...)
+    n_pa, n_E, n_t = size(C)
+    tol = merge(epd_tolerances(n_pa; fullspin), kw)
+    T = float(eltype(C))
+    para, anti, perp = zeros(T, n_E, n_t), zeros(T, n_E, n_t), zeros(T, n_E, n_t)
+    for t in 1:n_t, p in 1:n_pa
+        d = epd_direction(pitch_angles[p, t], loss_cone[t]; tol...)
+        dst = d === :para ? para : d === :anti ? anti : d === :perp ? perp : continue
+        for E in 1:n_E
+            dst[E, t] += C[p, E, t]
+        end
+    end
+    return (; para, anti, perp)
+end
+
+# `nspinsinsum` of the `Et` sector nearest each time `t`
+function _nsum(cdf, prefix, t)
+    te = DateTime.(Array(cdf["$(prefix)_et_time"]))
+    ns = Array(cdf["$(prefix)_nspinsinsum"])
+    return map(t) do x
+        j = clamp(searchsortedfirst(te, x), 1, length(te))
+        k = j > 1 && x - te[j - 1] < te[j] - x ? j - 1 : j
+        ns[k]
+    end
+end
+
+function epd_l2_Espectra(flux, pitch_angles, loss_cone; fullspin=false, kw...)
+    tol = epd_tolerances(size(pitch_angles, 1); fullspin)
+    return directional_energy_spectra(flux, pitch_angles, loss_cone; tol..., kw...)
 end
 
 # Port of PySPEDAS `epd_l2_PAspectra`
@@ -127,4 +190,17 @@ function epd_l2_PAspectra(S; energybins=nothing, energies=nothing)
     keys = Tuple(Symbol("ch$(i - 1)") for i in 1:length(min_channels))
     values = PAspectra(S, dE, min_channels, max_channels)
     return NamedTuple{keys}(values)
+end
+
+function epd_sectors(args...; probe = "ela", type = "eflux", kw...)
+    prefix = "el$(probe[end])_pef"
+    cdf = getdata(EPD[probe = probe, level = "l2"], args...; kw...)
+    v = cdf["$(prefix)_Et_$(type)"]
+    t = DateTime.(Array(cdf["$(prefix)_et_time"]))
+    nsum = Array(cdf["$(prefix)_nspinsinsum"])
+    c = epd_counts(Array(v), Array(cdf["$(prefix)_Et_dfovf"]), nsum)
+    dt = nsum .* median(Dates.value.(diff(t)) ./ 1000 ./ nsum[2:end])
+    d = (Energy(vec(convert(Array, CDF.dim(v, 1)))), Ti(t))
+    return DimStack((; flux = DimArray(c.flux, d), counts = DimArray(c.counts, d),
+        pa = DimArray(Array(cdf["$(prefix)_pa"]), d[2]), dt = DimArray(dt, d[2])))
 end

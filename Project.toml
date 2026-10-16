@@ -1,6 +1,6 @@
 name = "ELFINData"
 uuid = "fcbbe0ba-d66e-4e8f-95dd-8166f95b70c5"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Beforerr <zzj956959688@gmail.com> and contributors"]
 
 [workspace]
@@ -12,6 +12,7 @@ Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
 IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 SpaceDataModel = "0b37b92c-f0c5-4a52-bd5c-390dec20857c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 VelocityDistributionFunctions = "63a0b508-f74a-48f7-b6e7-0e65849b0078"
 
 [compat]
@@ -20,5 +21,6 @@ Dates = "1"
 DimensionalData = "0.29, 0.30"
 IntervalSets = "0.7"
 SpaceDataModel = "0.3, 0.4, 0.5, 0.6"
+Statistics = "1"
 VelocityDistributionFunctions = "0.1, 0.2"
 julia = "1.10"
