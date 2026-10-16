@@ -6,8 +6,10 @@ import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
 using SpaceDataModel: Registry, Dataset, Archive, FilePattern, Product, getdata, localize
 using IntervalSets: Interval
-using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!
+using VelocityDistributionFunctions: directional_energy_spectra, PAspectra, sort_flux_by_pitch_angle!,
+    is_parallel, is_anti_parallel, is_perpendicular
 using Dates
+using Statistics: median
 
 export ELA_L1_EPDEF, ELB_L1_EPDEF, ELA_L2_EPDEF, ELB_L2_EPDEF, ELA_L1_EPDIF, ELB_L1_EPDIF,
     ELA_PEF, ELB_PEF, ELA_PIF, ELB_PIF,
@@ -19,7 +21,7 @@ export ELA_L1_STATE, ELB_L1_STATE, ELA_POS_GEI, ELB_POS_GEI
 export ELA_L1_MRMA, ELB_L1_MRMA, ELA_L1_MRMI, ELB_L1_MRMI
 export ELA_MRMA, ELB_MRMA, ELA_MRMI, ELB_MRMI
 export EPD, FGM, STATE
-export epd_spectral
+export epd_spectral, epd_sectors
 export science_zones
 export EPD_DATA_NOTES, epd_data_notes
 export getdata
