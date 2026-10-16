@@ -48,7 +48,7 @@ spectra[Ti(DateTime("2020-10-01T06:00") .. DateTime("2020-10-01T07:00"))]
 - **Time is the last dimension**
 - **Probe** is `"ela"` or `"elb"`
 - EPD has an electron head (50 keV–5 MeV) and an ion head (50–5000 keV); 16 log-spaced energy channels, mean energies ~63–6500 keV
-- Only `FILLVAL` reads as `NaN`: ELFIN files carry placeholder `VALIDMIN`/`VALIDMAX` (e.g. 0..1e6 on EPD fluxes, which exceed it), so those bounds are not applied
+- Only `FILLVAL` reads as `NaN`. ELFIN's `VALIDMIN`/`VALIDMAX` are placeholders (EPD fluxes exceed 1e6, L1 FGM ±1e6)
 
 ## API
 
