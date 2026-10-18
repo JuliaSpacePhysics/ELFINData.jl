@@ -15,10 +15,10 @@ SpaceDataModel = "0b37b92c-f0c5-4a52-bd5c-390dec20857c"
 VelocityDistributionFunctions = "63a0b508-f74a-48f7-b6e7-0e65849b0078"
 
 [compat]
-CDFDatasets = "0.3.3"
+CDFDatasets = "0.3.3, 0.4"
 Dates = "1"
 DimensionalData = "0.29, 0.30"
 IntervalSets = "0.7"
-SpaceDataModel = "0.3, 0.4, 0.5"
+SpaceDataModel = "0.3, 0.4, 0.5, 0.6"
 VelocityDistributionFunctions = "0.1, 0.2"
 julia = "1.10"
