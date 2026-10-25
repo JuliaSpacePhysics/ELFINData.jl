@@ -74,3 +74,32 @@ end
 end
 
 @test epd_spectral(trange).para[:, 1] ≈ Float32[20541.432, 11046.116, 2887.873, 3359.2217, 434.48523, 173.7941, 0.0, 152.99594, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 85.875145]
+
+@testset "EPD counts" begin
+    d(n) = 1 / sqrt(n)
+    # flux: 10 counts; fill without flux; fill with flux; 4-spin-sum counts; flux without counts
+    F = Float32[1, 0, 1, 1, 1]
+    D = Float32[d(10), 0.00514419, 0.00514419, d(23159), Inf]
+    c1 = ELFINData.epd_counts(F, D, 1)
+    c4 = ELFINData.epd_counts(F, D, 4)
+    @test c1.counts[1:2] ≈ [10, 0]
+    @test c1.bad == [false, false, true, true, true]
+    @test c4.bad == [false, false, true, false, true]
+    @test isnan(c1.flux[4]) && c4.flux[4] == 1
+end
+
+@testset "EPD L2 products" begin
+    using Dates, Statistics
+    s = epd_spectral("2021-09-24", "2021-09-25"; type = "eflux", fullspin = true)
+    for south in (true, false)   # under trapped flux, downgoing exceeds the atmospheric backscatter in either hemisphere
+        k = findall(i -> (parent(s.lc)[i] > 90) == south && parent(s.perp_cnt)[1, i] > 100, eachindex(parent(s.lc)))
+        @test median(filter(isfinite, parent(s.prec)[1, k])) > 0
+    end
+    # corrupt packets: 1.8e11 eflux in cells without counts
+    c = epd_spectral(DateTime(2021, 5, 5, 14, 41), DateTime(2021, 5, 5, 14, 44); type = "eflux", fullspin = true)
+    @test sum(parent(c.para_bad) .+ parent(c.anti_bad) .+ parent(c.perp_bad)) > 0
+    @test maximum(filter(isfinite, parent(c.omni))) < 1e10
+    # 4-spin sums (from 08:59:55) accumulate 4 sectors' time; 1-spin sectors outnumber them here
+    e = epd_sectors(DateTime(2021, 9, 24, 8, 30), DateTime(2021, 9, 24, 9, 5))
+    @test all(isapprox.(extrema(parent(e.dt)), (0.175, 0.7); atol = 0.01))
+end

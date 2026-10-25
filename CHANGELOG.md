@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0]
+
+### Breaking
+
+- `epd_spectral`: `prec` is the downgoing minus the upgoing flux with the hemisphere from the loss cone (was `abs(para - anti)`), and impossible L2 cells (fill `dfovf`, flux without counts) are blanked from the fluxes.
+
 ## [0.2.0]
 
 ### Breaking
