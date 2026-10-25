@@ -131,19 +131,16 @@ function epd_tolerances(n_pa; fullspin = false)
     return (; half_sector_width, para_tol = _FOVo2 + half_sector_width, perp_tol = -_FOVo2)
 end
 
-epd_direction(pa, lc; half_sector_width, para_tol = _FOVo2 + half_sector_width, perp_tol = -_FOVo2) =
-    isnan(pa) ? nothing : is_parallel(pa, lc, para_tol) ? :para : is_anti_parallel(pa, lc, para_tol) ? :anti :
-    is_perpendicular(pa, lc, perp_tol) ? :perp : nothing
-
 # Sector sums per direction (SPEDAS `elf_getspec, type = 'raw'`), unlike the solid-angle-weighted mean of the fluxes
 function epd_directional_counts(C, pitch_angles, loss_cone; fullspin = false, kw...)
     n_pa, n_E, n_t = size(C)
-    tol = merge(epd_tolerances(n_pa; fullspin), kw)
+    (; para_tol, perp_tol) = merge(epd_tolerances(n_pa; fullspin), kw)
     T = float(eltype(C))
     para, anti, perp = zeros(T, n_E, n_t), zeros(T, n_E, n_t), zeros(T, n_E, n_t)
     for t in 1:n_t, p in 1:n_pa
-        d = epd_direction(pitch_angles[p, t], loss_cone[t]; tol...)
-        dst = d === :para ? para : d === :anti ? anti : d === :perp ? perp : continue
+        pa, lc = pitch_angles[p, t], loss_cone[t]
+        dst = is_parallel(pa, lc, para_tol) ? para : is_anti_parallel(pa, lc, para_tol) ? anti :
+            is_perpendicular(pa, lc, perp_tol) ? perp : continue
         for E in 1:n_E
             dst[E, t] += C[p, E, t]
         end

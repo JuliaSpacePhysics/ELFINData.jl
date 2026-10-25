@@ -6,11 +6,6 @@
 
 - `epd_spectral`: `prec` is the downgoing minus the upgoing flux with the hemisphere from the loss cone (was `abs(para - anti)`), and impossible L2 cells (fill `dfovf`, flux without counts) are blanked from the fluxes.
 
-### Added
-
-- `epd_spectral` layers: sector-summed counts `para_cnt`, `anti_cnt`, `perp_cnt`; blanked cells `para_bad`, `anti_bad`, `perp_bad`; loss cone `lc`.
-- `epd_sectors`: per-sector `Et` spectra and counts.
-
 ## [0.2.0]
 
 ### Breaking
