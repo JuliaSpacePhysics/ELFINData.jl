@@ -2,7 +2,6 @@ module ELFINData
 using DimensionalData
 using CDFDatasets
 using CDFDatasets: CDFDataset
-import CDFDatasets.CommonDataModel as CDM
 import CDFDatasets as CDF
 using SpaceDataModel: Registry, Dataset, Archive, FilePattern, Product, getdata, localize
 using IntervalSets: Interval

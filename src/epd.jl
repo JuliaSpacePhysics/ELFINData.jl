@@ -60,11 +60,11 @@ function epd_spectral(args...; probe="ela", type="nflux", datatype="epdef", full
     cdf = getdata(ds, args...; kw...)
     spec_data = cdf[spec_tvar]
 
-    pitch_angles = convert(Array, CDF.dim(spec_data, 1))
+    pitch_angles = convert(Array, CDF.depend(spec_data, 1))
     loss_cone = Array(cdf["$(base_var)_LCdeg"])
     S = Array(spec_data)
-    energies = convert(Array, CDF.dim(spec_data, 2))
-    times = DateTime.(CDF.dim(spec_data, ndims(spec_data)))
+    energies = convert(Array, CDF.depend(spec_data, 2))
+    times = DateTime.(CDF.depend(spec_data, ndims(spec_data)))
     Espectras = epd_l2_Espectra(S, pitch_angles, loss_cone; fullspin, Espectra...)
     metadata = merge(spec_data.attrib, Dict("SCALETYP" => log10, :yscale => log10, :colorrange => (1.0e1, 1.0e7), :ylabel => "Energy (keV)"))
 
