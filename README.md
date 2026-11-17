@@ -19,12 +19,12 @@ STATE[probe = "ela"]                                  # Spacecraft state/positio
 
 trange = ("2020-10-01", "2020-10-02")
 
-# EPD L2 spectra: DimStack of omni/para/anti/perp/prec (Energy × Time)
+# EPD L2 spectra: DimStack of omni/para/anti/perp/prec fluxes and per-direction counts (Energy × Time)
 spectra = epd_spectral(trange)
 spectra.para
 spectra.omni[:, 1]
 
-# Precipitating-to-trapped flux ratio (prec ./ perp)
+# Net precipitating-to-trapped flux ratio (prec ./ perp)
 ratio = ELFINData.flux_ratio(spectra)
 
 # EPD science zone start/end times: (; tstart, tend)
@@ -49,12 +49,15 @@ spectra[Ti(DateTime("2020-10-01T06:00") .. DateTime("2020-10-01T07:00"))]
 - **Probe** is `"ela"` or `"elb"`
 - EPD has an electron head (50 keV–5 MeV) and an ion head (50–5000 keV); 16 log-spaced energy channels, mean energies ~63–6500 keV
 - Only `FILLVAL` reads as `NaN`: ELFIN files carry placeholder `VALIDMIN`/`VALIDMAX` (e.g. 0..1e6 on EPD fluxes, which exceed it), so those bounds are not applied
+- EPD counts are `1/dfovf²` per sector cell (1, 2 or 4 spins summed: `nspinsinsum`). A cell without flux holds no counts, though L2 leaves fill `dfovf` there (37789 and 30676 counts, a 261·k series). A cell with flux is impossible, and blanked from the fluxes, with no counts, a fill `dfovf`, or more counts than the dead time (`EPD_DEAD_TIME`, SPEDAS `elf_cal_epd`) allows in its spins: corrupt packets put flux into cells without counts beside fills without flux (ELA 2021-05-05 14:41–14:44: 1.8×10¹¹ eflux at 0 counts), and the other cells of such a spin can be off too.
+- Directions follow PySPEDAS `epd_l2_Espectra`: `perp` includes sectors centred up to 11° (half the field of view) inside the loss cone.
 
 ## API
 
 ### Functions
 
-- `epd_spectral(t0, t1; probe = "ela", type = "nflux", datatype = "epdef", fullspin = false, PAspectra = nothing)`: `type` is `"nflux"` or `"eflux"`; `fullspin` selects full- over half-spin resolution; `Espectra` keywords pass to `VelocityDistributionFunctions.directional_energy_spectra`. With `PAspectra` a NamedTuple, it instead returns a NamedTuple of the energy spectra, pitch-angle spectra `ch0, ch1, …`, `energies`, `times` and `pitch_angles`; each is the energy-width-weighted mean over `energybins = [(1, 3), (4, 6)]` (channel indices) or `energies = [(50, 160), (160, 345)]` (keV), defaulting to channels 1–3, 4–6, 7–9, 10–16.
+- `epd_spectral(t0, t1; probe = "ela", type = "nflux", datatype = "epdef", fullspin = false, PAspectra = nothing)`: `type` is `"nflux"` or `"eflux"`; `fullspin` selects full- over half-spin resolution; `Espectra` keywords pass to `VelocityDistributionFunctions.directional_energy_spectra` (and the direction tolerances of the counts). Returns a `DimStack` on (Energy, Ti): fluxes `omni`, `para`, `anti`, `perp` and `prec` (downgoing minus upgoing, the downgoing loss cone anti-parallel where `lc > 90`); sector-summed counts `para_cnt`, `anti_cnt`, `perp_cnt`; `para_bad`, `anti_bad`, `perp_bad`, blanked impossible cells per direction; loss cone `lc` on Ti. With `PAspectra` a NamedTuple, it instead returns a NamedTuple of the energy spectra, pitch-angle spectra `ch0, ch1, …`, `energies`, `times` and `pitch_angles`; each is the energy-width-weighted mean over `energybins = [(1, 3), (4, 6)]` (channel indices) or `energies = [(50, 160), (160, 345)]` (keV), defaulting to channels 1–3, 4–6, 7–9, 10–16.
+- `epd_sectors(t0, t1; probe = "ela", type = "eflux")`: per-sector `Et` spectra (L1 `pef` shifted by `sect2add` sectors: sub-spin data without L1): `flux`, `counts`, pitch angle `pa`, accumulation time `dt`.
 - `science_zones(probe = "ela")`: EPD science zone times from the probe's `epd_science_zone_times.csv`.
 - `epd_data_notes(probe, t0, t1; head = "e")`: entries of `EPD_DATA_NOTES` (from <https://elfin.igpp.ucla.edu/data-notes>) for head `"e"` (electron) or `"i"` (ion) overlapping `[t0, t1)`.
 
