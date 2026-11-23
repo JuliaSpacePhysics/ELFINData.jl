@@ -26,7 +26,7 @@ export getdata
 const BASE_URL = "https://data.elfin.ucla.edu"
 const OVERPLOTS_URL = FilePattern("$BASE_URL/{probe}/overplots/{t:yyyy}/{t:mm}/{t:dd}/{probe}_{level}_overview_{t:yyyymmdd}_{datatype}.gif")
 
-_open(files, t0, t1) = view(cdfopen(files), Interval{:closed,:open}(t0, t1))
+_open(files, t0, t1; kw...) = view(cdfopen(files; kw...), Interval{:closed,:open}(t0, t1))
 
 include("epd.jl")
 include("fgm.jl")

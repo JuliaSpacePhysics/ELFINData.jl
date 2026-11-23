@@ -15,11 +15,15 @@ const _EPD_DATASET_SPECS = (
     (level="l1", datatype="epdif"),
 )
 
+# Ion files' `sectnum` FILLVAL is 0, a valid sector.
+const _EPDIF_VARATTRIB = Dict("$(p)_pif_sectnum" => Dict("FILLVAL" => nothing) for p in ("ela", "elb"))
+_open_epdif(files, t0, t1) = _open(files, t0, t1; varattrib = _EPDIF_VARATTRIB)
+
 # One Dataset per head: the electron head covers L1+L2 epdef, the ion head covers L1 epdif only.
 const _EPD_DATASETS = [
     Dataset("{probe|U}_{level|U}_EPDEF", Archive(EPD_URL(; head="electron"), _open);
         selectors=(; probe=("ela", "elb"), level=("l1", "l2"), datatype="epdef")),
-    Dataset("{probe|U}_L1_EPDIF", Archive(EPD_URL(; head="ion"), _open);
+    Dataset("{probe|U}_L1_EPDIF", Archive(EPD_URL(; head="ion"), _open_epdif);
         selectors=(; probe=("ela", "elb"), level="l1", datatype="epdif")),
 ]
 

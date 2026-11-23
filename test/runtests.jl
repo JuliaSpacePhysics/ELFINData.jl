@@ -25,7 +25,8 @@ end
 
 @testset "Datasets" begin
     ELA_L1_EPDEF("2021-08-08", "2021-08-10")
-    ELA_L1_EPDIF("2021-08-08", "2021-08-10")
+    # sector 0 is valid, though the files' FILLVAL is 0
+    @test minimum(ELB_L1_EPDIF("2021-09-14", "2021-09-15")["elb_pif_sectnum"]) == 0
     ELA_L2_EPDEF("2021-08-08", "2021-08-10")
     ELA_L1_FGS("2020-10-01", "2020-10-02")
     ELA_L1_STATE("2021-08-08", "2021-08-10")
